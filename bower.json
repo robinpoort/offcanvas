@@ -1,0 +1,9 @@
+{
+  "name": "offcanvas-plugin",
+  "description": "Accessible off canvas plugin",
+  "author": "Robin Poort",
+  "private": true,
+  "devDependencies": {
+    "jquery": "https://github.com/jquery/jquery.git#1.11.3"
+  }
+}
