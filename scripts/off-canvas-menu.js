@@ -25,11 +25,11 @@
 
         this.ariaControls = options.ariaControls || this.$menu.selector.replace('#', '');
 
+        var transition = this.$wrapper.css('transition-duration');
+        var transitionDuration = transition.replace('s', '') * 1000;
+
         if(this.$menuToggle.length > 0){
             var self = this;
-
-            var transition = self.$wrapper.css('transition-duration');
-            var transitionDuration = transition.replace('s', '') * 1000;
 
             console.log(transition,transitionDuration);
 
@@ -242,6 +242,13 @@
                 // open/close menu:
                 var method = isOpeningMenu ? 'addClass' : 'removeClass';
                 this.$menuExpandedClassTarget[method](this.menuExpandedClass);
+                if ( method === 'addClass' ) {
+                    this.$menuToggle.attr({'aria-expanded': 'true'});
+                    this.$menu.css('display', 'block');
+                } else {
+                    this.$menuToggle.attr({'aria-expanded': 'false'});
+                    this.$menu.removeAttr('style');
+                }
             }
 
             // Reset start object:
