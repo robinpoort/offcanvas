@@ -28,22 +28,33 @@
         if(this.$menuToggle.length > 0){
             var self = this;
 
+            var transition = self.$wrapper.css('transition-duration');
+            var transitionDuration = transition.replace('s', '') * 1000;
+
+            console.log(transition,transitionDuration);
+
             this.$menuToggle.attr({
                 'role': 'button',
                 'aria-controls': self.ariaControls,
                 'aria-expanded': 'false'
             });
 
-            function toggleMenu() {
-                var method = !self.$menuExpandedClassTarget.hasClass(self.menuExpandedClass) ? 'addClass' : 'removeClass';
-                var aria = self.$menuToggle.attr('aria-expanded') === 'true' ? 'false' : 'true';
-                self.$menuExpandedClassTarget[method](self.menuExpandedClass);
-                self.$menuToggle.attr({'aria-expanded': aria});
+            function openMenu() {
+                self.$menuExpandedClassTarget['addClass'](self.menuExpandedClass);
+                self.$menu.css('display', 'block');
+                self.$menuToggle.attr({'aria-expanded': 'true'});
             }
 
             function closeMenu() {
                 self.$menuExpandedClassTarget['removeClass'](self.menuExpandedClass);
                 self.$menuToggle.attr({'aria-expanded': 'false'});
+                setTimeout(function() { self.$menu.css('display', 'none'); }, transitionDuration);
+            }
+
+            function toggleMenu() {
+                var method = !self.$menuExpandedClassTarget.hasClass(self.menuExpandedClass) ? 'closed' : 'opened';
+                if ( method === 'closed' ) { openMenu(); }
+                if ( method === 'opened' ) { closeMenu(); }
             }
 
             // Set up toggle button:

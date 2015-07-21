@@ -27,8 +27,22 @@
             });
         });
     </script>
+
+    <!--[if lte IE 9]>
+    <script src="bower_components/html5shiv/dist/html5shiv.min.js"></script>
+    <![endif]-->
+
 </head>
 <body>
+<script type="text/javascript">
+    var el = document.body;
+    var cl = 'js-enabled';
+    if (el.classList) {
+        el.classList.add(cl);
+    } else {
+        el.className += ' ' + className;
+    }
+</script>
 
 <div id="outer-wrapper">
 

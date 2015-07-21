@@ -4,6 +4,8 @@
   "author": "Robin Poort",
   "private": true,
   "devDependencies": {
-    "jquery": "https://github.com/jquery/jquery.git#1.11.3"
+    "jquery": "https://github.com/jquery/jquery.git#1.11.3",
+    "html5shiv": "3.7.2",
+    "normalize-scss": "3.0.3"
   }
 }
