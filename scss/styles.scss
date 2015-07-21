@@ -114,10 +114,14 @@ nav#right-menu {
     display: none;
   }
 
+  .js-enabled .off-canvas-menu {
+    display: block;
+  }
+
 }
 
 .container {
-  padding-top: 100px;
+  text-align: center;
 }
 
 .off-canvas-menu-toggle {
@@ -197,3 +201,4 @@ nav#right-menu {
   transform: translate(-100%, 0);
   opacity: 0;
 }
+

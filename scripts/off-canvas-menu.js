@@ -48,7 +48,7 @@
             function closeMenu() {
                 self.$menuExpandedClassTarget['removeClass'](self.menuExpandedClass);
                 self.$menuToggle.attr({'aria-expanded': 'false'});
-                setTimeout(function() { self.$menu.css('display', 'none'); }, transitionDuration);
+                setTimeout(function() { self.$menu.removeAttr('style'); }, transitionDuration);
             }
 
             function toggleMenu() {
