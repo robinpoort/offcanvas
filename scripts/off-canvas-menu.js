@@ -31,8 +31,6 @@
         if(this.$menuToggle.length > 0){
             var self = this;
 
-            console.log(transition,transitionDuration);
-
             this.$menuToggle.attr({
                 'role': 'button',
                 'aria-controls': self.ariaControls,
