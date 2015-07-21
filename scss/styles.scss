@@ -1,6 +1,10 @@
 // Adding normalize
 @import "../bower_components/normalize-scss/normalize";
 
+// Vars
+$menuwidth: 260px;
+$transition: all 250ms cubic-bezier(.15,.8,.2,.9);
+
 /* Basic styling */
 body,
 html {
@@ -23,7 +27,7 @@ html {
   width: 100%;
   height: 100%;
   position: relative;
-  transition: all 200ms ease-in-out;
+  transition: $transition;
 }
 
 #outer-wrapper:after {
@@ -37,15 +41,15 @@ html {
   z-index: -1;
   display: block;
   opacity: 0;
-  transition: all .2s ease-in-out;
+  transition: $transition;
 }
 
 .show-left-menu #outer-wrapper {
-  transform: translate(200px,0);
+  transform: translate($menuwidth, 0);
 }
 
 .show-right-menu #outer-wrapper {
-  transform: translate(-200px,0);
+  transform: translate(-$menuwidth, 0);
 }
 
 .show-left-menu #outer-wrapper:after,
@@ -56,7 +60,7 @@ html {
 
 /* The menu */
 .off-canvas-menu {
-  width: 200px;
+  width: $menuwidth;
   height:100%;
   background: #333;
   position: absolute;
@@ -70,12 +74,12 @@ html {
 }
 
 nav#left-menu {
-  left: -200px;
+  left: -$menuwidth;
   z-index: 1;
 }
 
 nav#right-menu {
-  right: -200px;
+  left: 100%;
   z-index: 1;
 }
 
@@ -93,7 +97,7 @@ nav#right-menu {
   .off-canvas-menu {
     position: relative;
     display: table-cell;
-    flex: 0 0 200px;
+    flex: 0 0 $menuwidth;
   }
 
   .container {
@@ -161,7 +165,7 @@ nav#right-menu {
   background: white;
   border-radius: 1px;
   vertical-align: middle;
-  transition: all .2s ease-in-out;
+  transition: $transition;
 }
 
 .off-canvas-menu-toggle .bar1 {

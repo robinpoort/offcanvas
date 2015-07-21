@@ -164,6 +164,10 @@
 
             var pageX = e.touches[0].pageX;
 
+            // Escape if Menu is closed
+            if(!this.$menuExpandedClassTarget.hasClass(this.menuExpandedClass))
+                return;
+
             // Escape if invalid start touch position
             if(this.currentPosition() - this.dragHandleOffset > pageX ||
                 this.currentPosition() + this.dragHandleOffset < pageX)
@@ -215,7 +219,7 @@
                     return;
 
                 // translate immediately 1-to-1
-                this.wrapper.style.MozTransform = this.wrapper.style.webkitTransform = 'translate3d(' + newPos + 'px,0,0)';
+                this.wrapper.style.MozTransform = this.wrapper.style.webkitTransform = 'translate(' + newPos + 'px,0)';
 
                 e.stopPropagation();
             }
