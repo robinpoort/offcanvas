@@ -2,13 +2,12 @@
   width: 43px;
   height: 43px;
   border-radius: 3px;
-  background: #232323;
-  color: white;
+  background: #34495e;
+  color: #ecf0f1;
   border: none;
   padding: 0;
   margin: 10px;
   position: absolute;
-  z-index: 9;
   top: 0;
 
   .bar1,
@@ -19,7 +18,7 @@
     display: block;
     position: absolute;
     left: 10px;
-    background: white;
+    background: #ecf0f1;
     border-radius: 1px;
     vertical-align: middle;
     transition: $transition;
@@ -44,22 +43,4 @@
 
 #right-menu-toggle {
   right: 0;
-}
-
-.show-left-menu .off-canvas-menu-toggle#left-menu-toggle,
-.show-right-menu .off-canvas-menu-toggle#right-menu-toggle {
-  .bar1 {
-    top: 20px;
-    transform: rotate(135deg);
-  }
-
-  .bar2 {
-    transform: translate(-100%, 0);
-    opacity: 0;
-  }
-
-  .bar3 {
-    top: 20px;
-    transform: rotate(-135deg);
-  }
 }

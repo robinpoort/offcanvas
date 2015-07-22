@@ -3,7 +3,7 @@
 
 // Vars
 $menuwidth: 260px;
-$transition: all 250ms cubic-bezier(.15,.8,.2,.9);
+$transition: all 350ms cubic-bezier(.15,.8,.2,.9);
 
 /* Basic styling */
 body,
@@ -30,7 +30,7 @@ html {
   transition: $transition;
 }
 
-#outer-wrapper:after {
+.off-canvas-overlay {
   content: " ";
   position: absolute;
   top: 0;
@@ -44,16 +44,16 @@ html {
   transition: $transition;
 }
 
-.show-left-menu #outer-wrapper {
+.show-left-menu #left-menu {
   transform: translate($menuwidth, 0);
 }
 
-.show-right-menu #outer-wrapper {
+.show-right-menu #right-menu {
   transform: translate(-$menuwidth, 0);
 }
 
-.show-left-menu #outer-wrapper:after,
-.show-right-menu #outer-wrapper:after {
+.show-left-menu .off-canvas-overlay,
+.show-right-menu .off-canvas-overlay {
   opacity: .5;
   z-index: 1;
 }
@@ -69,6 +69,7 @@ html {
   -webkit-overflow-scrolling: touch;
   color: white;
   padding: 1em;
+  transition: $transition;
 
   h2 {
     font-size: 1.5em;
@@ -88,19 +89,19 @@ html {
 
 nav#left-menu {
   left: -$menuwidth;
-  z-index: 1;
+  z-index: 3;
 }
 
 nav#right-menu {
   left: 100%;
-  z-index: 1;
+  z-index: 3;
 }
 
 .js-enabled .off-canvas-menu {
-  display: none;
+//  display: none;
 }
 
-@media (min-width:768px) {
+@media (min-width:8000px) {
 
   #outer-wrapper {
     display: table;
@@ -139,10 +140,25 @@ nav#right-menu {
 
 .container {
   text-align: center;
+  background: #16a085;
+  color: white;
+  padding: 20px;
 
   h1 {
+    font-weight: normal;
     margin: 0;
   }
 }
 
 @import "hamburger";
+
+
+#test {
+  position: fixed;
+  bottom:10px;
+  left: 10px;
+  background: white;
+  padding: 20px;
+  font-size: 1em;
+  z-index: 999;
+}
