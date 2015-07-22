@@ -48,7 +48,7 @@
         }
         this.$overlay = options.$overlay || $('.off-canvas-overlay');
         this.overlay = this.$overlay[0];
-        this.overlayOpacity = options.overlayOpacity || '0.5';
+        this.overlayOpacity = options.overlayOpacity || '0.75';
 
         // Get set transition
         var transition = this.$menu.css('transition-duration');
