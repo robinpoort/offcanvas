@@ -98,7 +98,11 @@ nav#right-menu {
 }
 
 .js-enabled .off-canvas-menu {
-  //display: none;
+  display: none;
+}
+
+.off-canvas-menu.opened {
+  display: block;
 }
 
 @media (min-width:8000px) {

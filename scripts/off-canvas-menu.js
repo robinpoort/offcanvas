@@ -3,7 +3,7 @@
 (function(window) {
 
     function openMenu(self) {
-        self.$menu.show();
+        self.$menu.show().addClass('opened');
         setTimeout(function() {
             self.$menuExpandedClassTarget['addClass'](self.menuExpandedClass);
             self.$menuToggle.attr({'aria-expanded': 'true'}).attr('disabled', 'disabled');
@@ -15,7 +15,7 @@
         self.$menuToggle.attr({'aria-expanded': 'false'});
         self.$overlay.removeAttr('style');
         setTimeout(function() {
-            self.$menu.removeAttr('style');
+            self.$menu.removeAttr('style').removeClass('opened');
             self.$menuToggle.removeAttr('disabled');
         }, transitionDuration);
     }
