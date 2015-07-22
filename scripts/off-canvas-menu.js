@@ -20,16 +20,11 @@
         }, transitionDuration);
     }
 
-    function toggleMenu(self, transitionDuration) {
-        var method = !self.$menuExpandedClassTarget.hasClass(self.menuExpandedClass) ? 'closed' : 'opened';
-        if ( method === 'closed' ) { openMenu(self); }
-        if ( method === 'opened' ) { closeMenu(self, transitionDuration); }
-    }
-
     window.OffCanvasMenuController = function(options){
 
         options = options || {};
 
+        // The menu
         this.$menu = options.$menu;
         this.menu = this.$menu[0];
         this.menuExpandedClass = options.menuExpandedClass;
@@ -39,17 +34,15 @@
             return;
 
         this.$menuToggle = options.$menuToggle || [];
-        this.$menuExpandedClassTarget = options.$menuExpandedClassTarget || $('body');
         this.position = options.position || 'left';
-
-        this.$wrapper = options.wrapper || $('#outer-wrapper');
+        this.$wrapper = options.wrapper || this.$menu.parent();
         this.wrapper = this.$wrapper[0];
-
+        this.$menuExpandedClassTarget = options.$menuExpandedClassTarget || this.$wrapper;
         this.dragHandleOffset = options.dragHandleOffset || this.$menuToggle.outerWidth();
         this.expandedWidth = this.$menu.outerWidth();
-
         this.ariaControls = options.ariaControls || this.$menu.selector.replace('#', '');
 
+        // The overlay
         if ( !$('.off-canvas-overlay').length ) {
             this.$wrapper.append('<div class="off-canvas-overlay"></div>');
         }
@@ -57,12 +50,15 @@
         this.overlay = this.$overlay[0];
         this.overlayOpacity = options.overlayOpacity || '0.5';
 
-        var transition = this.$wrapper.css('transition-duration');
+        // Get set transition
+        var transition = this.$menu.css('transition-duration');
         this.transitionDuration = transition.replace('s', '') * 1000;
 
+        // If we have a toggle button available
         if(this.$menuToggle.length > 0){
             var self = this;
 
+            // Set ARIA attributes
             this.$menuToggle.attr({
                 'role': 'button',
                 'aria-controls': self.ariaControls,
@@ -72,21 +68,16 @@
             // Set up toggle button:
             this.$menuToggle.click(function(event){
                 event.stopPropagation();
-                toggleMenu(self, this.transitionDuration);
+                openMenu(self, self.transitionDuration);
             });
 
-            // Close menu on clicking next to sidebar
+            // Close menu by clicking anywhere
             this.$wrapper.click(function(){
-                closeMenu(self, this.transitionDuration);
+                closeMenu(self, self.transitionDuration);
             });
 
-            // Close menu if esc keydown and menu is open and set focus to toggle button
-            this.$menuExpandedClassTarget.bind('keydown', function(e) {
-                if (e.keyCode === 27 && self.$menuExpandedClassTarget.hasClass(self.menuExpandedClass)) {
-                    closeMenu(self, this.transitionDuration);
-                    self.$menuToggle.focus();
-                }
-            });
+            // Don't close the menu when clicked on sidemenu
+            this.$menu.click(function(event){ event.stopPropagation(); });
 
             if (this.position === 'left') {
                 // At start of navigation block, return focus to toggle button
@@ -132,10 +123,13 @@
                 });
             }
 
-
-            // Don't close the menu when clicked on sidemenu
-            this.$menu.click(function(event){ event.stopPropagation(); });
-
+            // Close menu if esc keydown and menu is open and set focus to toggle button
+            $(document).bind('keydown', function(e) {
+                if (e.keyCode === 27 && self.$menuExpandedClassTarget.hasClass(self.menuExpandedClass)) {
+                    closeMenu(self, self.transitionDuration);
+                    self.$menuToggle.focus();
+                }
+            });
 
         }
 
@@ -223,8 +217,6 @@
                 if(!this.inBounds(newPos))
                     return;
 
-                $('#test').html(newPos + ' ' + this.expandedWidth + ' ' + Math.abs(newPos));
-
                 // translate immediately 1-to-1
                 this.menu.style.MozTransform = this.menu.style.webkitTransform = 'translate(' + newPos + 'px,0)';
                 this.overlay.style.opacity = opacity;
@@ -252,10 +244,10 @@
             // if not scrolling vertically
             if (!this.isScrolling) {
 
-                this.$menu.attr('style', '');
+                this.$menu.removeAttr('style');
 
-                if ( newPos <= (this.expandedWidth * 0.66) ) {
-                    closeMenu(self, this.transitionDuration);
+                if ( newPos <= (self.expandedWidth * 0.66) ) {
+                    closeMenu(self, self.transitionDuration);
                 } else {
                     openMenu(self);
                     this.$overlay.removeAttr('style');
