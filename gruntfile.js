@@ -55,6 +55,7 @@ module.exports = function(grunt) {
             build: {
                 files: {
                     'js/off-canvas-menu.min.js': [
+                        'bower_components/jquery.tabbable/jquery.tabbable.js',
                         'scripts/off-canvas-menu.js'
                     ]
                 }

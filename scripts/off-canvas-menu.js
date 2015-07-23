@@ -2,6 +2,40 @@
 
 (function(window) {
 
+    function tabToggle(self) {
+        // When tabbing on toggle button
+        self.$menuToggle.bind('keydown', function(e) {
+            if (e.keyCode === 9 && self.$menuExpandedClassTarget.hasClass(self.menuExpandedClass)) {
+                e.preventDefault();
+                if ( e.shiftKey ) {
+                    self.$menu.find(':tabbable').last().focus();
+                } else {
+                    self.$menu.find(':tabbable').first().focus();
+                }
+            }
+        });
+
+        // When tabbing on first tabbable menu item
+        self.$menu.find(':tabbable').first().bind('keydown', function(e) {
+            if (e.keyCode === 9 && self.$menuExpandedClassTarget.hasClass(self.menuExpandedClass)) {
+                if ( e.shiftKey ) {
+                    e.preventDefault();
+                    self.$menuToggle.focus();
+                }
+            }
+        });
+
+        // When tabbing on last tabbable menu item
+        self.$menu.find(':tabbable').last().bind('keydown', function(e) {
+            if (e.keyCode === 9 && self.$menuExpandedClassTarget.hasClass(self.menuExpandedClass)) {
+                if ( !e.shiftKey ) {
+                    e.preventDefault();
+                    self.$menuToggle.focus();
+                }
+            }
+        });
+    }
+
     function openMenu(self) {
         self.$menu.show();
         self.$menuExpandedClassTarget['addClass'](self.menuExpandedClass);
@@ -13,6 +47,8 @@
             self.$menu.addClass('opened');
             self.$wrapper.addClass('opened');
         });
+        // Enable toggling
+        tabToggle(self);
     }
 
     function closeMenu(self, transitionDuration) {
@@ -92,45 +128,6 @@
             this.$menu.click(function(event){
                 event.stopPropagation();
             });
-
-            // Keyboard accessible left menu
-            if (this.position === 'left') {
-                // At start of navigation block, return focus to toggle button
-                this.$menu.find('li:first-child a').bind('keydown', function(e) {
-                    if (e.keyCode === 9 && e.shiftKey && self.$menuExpandedClassTarget.hasClass(self.menuExpandedClass)) {
-                        e.preventDefault();
-                        self.$menuToggle.focus();
-                    }
-                });
-
-                // Set focus to menu when tabbing on toggle button
-                this.$menuToggle.bind('keydown', function(e) {
-                    if (e.keyCode === 9 && !e.shiftKey && self.$menuExpandedClassTarget.hasClass(self.menuExpandedClass)) {
-                        e.preventDefault();
-                        self.$menu.find('li:first-child a').focus();
-                    }
-                });
-            }
-
-            // Keyboard accessible right menu
-            if (this.position === 'right') {
-
-                // Set focus to menu when tabbing on toggle button
-                this.$menuToggle.bind('keydown', function(e) {
-                    if (e.keyCode === 9 && e.shiftKey && self.$menuExpandedClassTarget.hasClass(self.menuExpandedClass)) {
-                        e.preventDefault();
-                        self.$menu.find('li:last-child a').focus();
-                    }
-                });
-
-                // At end of navigation block, return focus to toggle button
-                this.$menu.find('li:last-child a').bind('keydown', function(e) {
-                    if (e.keyCode === 9 && !e.shiftKey && self.$menuExpandedClassTarget.hasClass(self.menuExpandedClass)) {
-                        e.preventDefault();
-                        self.$menuToggle.focus();
-                    }
-                });
-            }
 
             // Close menu if esc keydown and menu is open and set focus to toggle button
             $(document).bind('keydown', function(event) {
