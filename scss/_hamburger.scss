@@ -1,6 +1,6 @@
 .off-canvas-menu-toggle {
-  width: 43px;
-  height: 43px;
+  width: $button-size;
+  height: $button-size;
   border-radius: 3px;
   background: #34495e;
   color: #ecf0f1;
@@ -11,18 +11,14 @@
   top: 0;
   z-index: 3;
 
-  &:focus {
-    outline: 2px solid #f1c40f;
-  }
-
   .bar1,
   .bar2,
   .bar3 {
-    width: 24px;
-    height: 3px;
+    width: $bar-width;
+    height: $bar-height;
     display: block;
     position: absolute;
-    left: 10px;
+    left: round(($button-size - $bar-width) / 2);
     background: #ecf0f1;
     border-radius: 1px;
     vertical-align: middle;
@@ -30,15 +26,15 @@
   }
 
   .bar1 {
-    top: 13px;
+    top: round(($button-size - $bar-width) / 2);
   }
 
   .bar2 {
-    top: 20px;
+    top: round((($button-size - $bar-width) / 2) + ($bar-height * 2));
   }
 
   .bar3 {
-    top: 27px;
+    top: round((($button-size - $bar-width) / 2) + ($bar-height * 4));
   }
 }
 
@@ -53,7 +49,7 @@
 .show-left-menu .off-canvas-menu-toggle#left-menu-toggle,
 .show-right-menu .off-canvas-menu-toggle#right-menu-toggle {
   .bar1 {
-    top: 20px;
+    top: round(($button-size / 2) - ($bar-height / 2));
     transform: rotate(135deg);
   }
 
@@ -63,7 +59,7 @@
   }
 
   .bar3 {
-    top: 20px;
+    top: round(($button-size / 2) - ($bar-height / 2));
     transform: rotate(-135deg);
   }
 }

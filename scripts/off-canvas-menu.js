@@ -6,6 +6,7 @@
         self.$menu.show().addClass('opened');
         self.$menuExpandedClassTarget['addClass'](self.menuExpandedClass);
         self.$menuToggle.attr({'aria-expanded': 'true'});
+        self.$wrapper.parent().css('overflow-x', 'hidden');
     }
 
     function closeMenu(self, transitionDuration) {

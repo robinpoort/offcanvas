@@ -1,0 +1,8 @@
+// Vars
+$menuwidth: 260px;
+$transition: all 1350ms cubic-bezier(.15,.8,.2,.93);
+
+// Hamburger
+$button-size: 38px;
+$bar-width: 20px; // Best to grab a number that can be divided by 5
+$bar-height: round($bar-width / 5);
