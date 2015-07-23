@@ -58,7 +58,7 @@
         if ( !this.$offCanvasOverlay.length ) {
             this.$wrapper.append('<div class="' + this.offCanvasOverlay + '"></div>');
         }
-        this.$overlay = this.$offCanvasOverlay;
+        this.$overlay = $('.' + this.offCanvasOverlay);
         this.overlay = this.$overlay[0];
         this.overlayOpacity = options.overlayOpacity || '0.75';
         this.transitionDuration = this.$wrapper.css('transition-duration').replace('s', '') * 1000;
@@ -200,6 +200,7 @@
 
             // set transition time to 0 for 1-to-1 touch movement
             this.wrapper.style.MozTransitionDuration = this.wrapper.style.webkitTransitionDuration = 0;
+            this.overlay.style.MozTransitionDuration = this.overlay.style.webkitTransitionDuration = 0;
 
             e.stopPropagation();
         },
@@ -224,15 +225,12 @@
 
                 var opacity = (this.overlayOpacity / this.expandedWidth) * Math.abs(newPos);
 
-                $('#test').html(newPos + ' ' + Math.abs(newPos) + ' ' + this.position + ' ' + this.expandedWidth);
-
                 if(!this.inBounds(newPos))
                     return;
 
                 // translate immediately 1-to-1
                 this.wrapper.style.MozTransform = this.wrapper.style.webkitTransform = 'translate(' + newPos + 'px,0)';
                 this.overlay.style.opacity = opacity;
-
 
                 e.stopPropagation();
             }
@@ -258,7 +256,7 @@
                 this.$wrapper.removeAttr('style');
 
                 if ( ( this.position == 'left' && ( absNewPos <= (this.expandedWidth * 0.66) || newPos <= 0 ) ) ||
-                     ( this.position == 'right' && ( absNewPos <= (this.expandedWidth * 0.66) || newPos >= 0 ) ) ) {
+                    ( this.position == 'right' && ( absNewPos <= (this.expandedWidth * 0.66) || newPos >= 0 ) ) ) {
                     closeMenu(this, this.transitionDuration);
                 } else {
                     openMenu(this);
