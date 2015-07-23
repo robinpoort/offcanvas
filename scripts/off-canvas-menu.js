@@ -3,19 +3,26 @@
 (function(window) {
 
     function openMenu(self) {
-        self.$menu.show().addClass('opened');
+        self.$menu.show();
         self.$menuExpandedClassTarget['addClass'](self.menuExpandedClass);
         self.$menuToggle.attr({'aria-expanded': 'true'});
         self.$wrapper.parent().css('overflow-x', 'hidden');
+        self.$wrapper.on("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(e) {
+            // When $wrapper transition has ended add the 'opened' class
+            // We do this to always win over the closing transitionend
+            self.$menu.addClass('opened');
+        });
     }
 
     function closeMenu(self, transitionDuration) {
         self.$menuExpandedClassTarget['removeClass'](self.menuExpandedClass);
         self.$menuToggle.attr({'aria-expanded': 'false'});
         self.$overlay.removeAttr('style');
-        setTimeout(function() {
+        self.$wrapper.on("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(e) {
+            // Remove style and class only on transationend
+            // We do this so the menu stays visible on closing
             self.$menu.removeAttr('style').removeClass('opened');
-        }, transitionDuration);
+        });
     }
 
     function toggleMenu(self, transitionDuration) {
@@ -30,7 +37,6 @@
 
         // The menu
         this.$menu = options.$menu;
-        this.menu = this.$menu[0];
         this.position = options.position || 'left';
         this.menuExpandedClass = options.menuExpandedClass || 'show-' + this.position + '-menu';
 
@@ -44,16 +50,15 @@
         this.$menuExpandedClassTarget = options.$menuExpandedClassTarget || this.$wrapper;
         this.expandedWidth = this.$menu.outerWidth();
         this.ariaControls = options.ariaControls || this.$menu.selector.replace('#', '');
-
+        this.offCanvasOverlay = options.offCanvasOverlay || 'off-canvas-overlay';
+        this.$offCanvasOverlay = $('.' + this.offCanvasOverlay);
         // The overlay
-        if ( !$('.off-canvas-overlay').length ) {
-            this.$wrapper.append('<div class="off-canvas-overlay"></div>');
+        if ( !this.$offCanvasOverlay.length ) {
+            this.$wrapper.append('<div class="' + this.offCanvasOverlay + '"></div>');
         }
-        this.$overlay = options.$overlay || $('.off-canvas-overlay');
+        this.$overlay = this.$offCanvasOverlay;
         this.overlay = this.$overlay[0];
         this.overlayOpacity = options.overlayOpacity || '0.75';
-
-        // Get set transition
         this.transitionDuration = this.$wrapper.css('transition-duration').replace('s', '') * 1000;
 
         // If we have a toggle button available
@@ -81,46 +86,41 @@
             // Don't close the menu when clicked on sidemenu
             this.$menu.click(function(event){ event.stopPropagation(); });
 
+            // Keyboard accessible left menu
             if (this.position === 'left') {
                 // At start of navigation block, return focus to toggle button
                 this.$menu.find('li:first-child a').bind('keydown', function(e) {
-                    if (e.keyCode === 9 && self.$menuExpandedClassTarget.hasClass(self.menuExpandedClass)) {
-                        if (e.shiftKey) {
-                            e.preventDefault();
-                            self.$menuToggle.focus();
-                        }
+                    if (e.keyCode === 9 && e.shiftKey && self.$menuExpandedClassTarget.hasClass(self.menuExpandedClass)) {
+                        e.preventDefault();
+                        self.$menuToggle.focus();
                     }
                 });
 
                 // Set focus to menu when tabbing on toggle button
                 this.$menuToggle.bind('keydown', function(e) {
-                    if (e.keyCode === 9 && self.$menuExpandedClassTarget.hasClass(self.menuExpandedClass)) {
-                        if (!e.shiftKey) {
-                            e.preventDefault();
-                            self.$menu.find('li:first-child a').focus();
-                        }
+                    if (e.keyCode === 9 && !e.shiftKey && self.$menuExpandedClassTarget.hasClass(self.menuExpandedClass)) {
+                        e.preventDefault();
+                        self.$menu.find('li:first-child a').focus();
                     }
                 });
             }
 
+            // Keyboard accessible right menu
             if (this.position === 'right') {
+
                 // Set focus to menu when tabbing on toggle button
                 this.$menuToggle.bind('keydown', function(e) {
-                    if (e.keyCode === 9 && self.$menuExpandedClassTarget.hasClass(self.menuExpandedClass)) {
-                        if (e.shiftKey) {
-                            e.preventDefault();
-                            self.$menu.find('li:last-child a').focus();
-                        }
+                    if (e.keyCode === 9 && e.shiftKey && self.$menuExpandedClassTarget.hasClass(self.menuExpandedClass)) {
+                        e.preventDefault();
+                        self.$menu.find('li:last-child a').focus();
                     }
                 });
 
                 // At end of navigation block, return focus to toggle button
                 this.$menu.find('li:last-child a').bind('keydown', function(e) {
-                    if (e.keyCode === 9 && self.$menuExpandedClassTarget.hasClass(self.menuExpandedClass)) {
-                        if (!e.shiftKey) {
-                            e.preventDefault();
-                            self.$menuToggle.focus();
-                        }
+                    if (e.keyCode === 9 && !e.shiftKey && self.$menuExpandedClassTarget.hasClass(self.menuExpandedClass)) {
+                        e.preventDefault();
+                        self.$menuToggle.focus();
                     }
                 });
             }
