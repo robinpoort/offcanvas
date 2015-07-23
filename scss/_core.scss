@@ -3,12 +3,23 @@
   box-sizing: border-box;
 }
 
-/* Needed classes */
-#outer-wrapper {
+
+
+/**
+ * The off canvas wrapper
+ ========================
+ */
+
+.off-canvas-wrapper {
   width: 100%;
   height: 100%;
   position: relative;
   transition: $transition;
+
+  @media (min-width:$query) {
+    display: table; // Faking flexbox for older browsers
+    display: flex;
+  }
 }
 
 .off-canvas-overlay {
@@ -25,6 +36,13 @@
   transition: $transition;
 }
 
+
+
+/**
+ * When menu is toggled
+ ======================
+ */
+
 .show-left-menu {
   transform: translate($menuwidth, 0);
 }
@@ -33,16 +51,23 @@
   transform: translate(-$menuwidth, 0);
 }
 
-.show-left-menu .off-canvas-overlay,
-.show-right-menu .off-canvas-overlay {
-  // Make sure the overlay is behind the nav so we won't get weird jumps
-  opacity: .75;
-  z-index: 1;
-  right: -10px;
-  left: -10px;
+.show-left-menu,
+.show-right-menu {
+  .off-canvas-overlay {
+    opacity: .75;
+    z-index: 1;
+    right: -10px; // Make sure the overlay is behind the nav so we won't get weird jumps
+    left: -10px; // Make sure the overlay is behind the nav so we won't get weird jumps
+  }
 }
 
-/* The menu */
+
+
+/**
+ * The menu styling
+ ==================
+ */
+
 .off-canvas-menu {
   width: $menuwidth;
   height: 100%;
@@ -50,10 +75,16 @@
   position: absolute;
   top: 0;
   overflow: auto;
-  -webkit-overflow-scrolling: touch;
   color: #ecf0f1;
   padding: 1em;
   z-index: 3;
+  -webkit-overflow-scrolling: touch;
+
+  @media (min-width:$query) {
+    position: relative; // Resetting position to relative
+    display: table-cell; // Faking flexbox for older browsers
+    flex: 0 0 $menuwidth;
+  }
 
   h2 {
     font-size: 1.5em;
@@ -65,75 +96,43 @@
     padding: 0;
     list-style: none;
   }
+
+  a {
+    color: white;
+  }
+
+  &--left {
+    left: -$menuwidth;
+
+    @media (min-width:$query) {
+      left: 0; // display
+    }
+  }
+
+  &--right {
+    left: 100%;
+
+    @media (min-width:$query) {
+      left: auto; // Display
+    }
+  }
 }
 
-.off-canvas-menu a {
-  color: white;
-}
 
-nav#left-menu {
-  left: -$menuwidth;
-  z-index: 3;
-}
 
-nav#right-menu {
-  left: 100%;
-  z-index: 3;
-}
+/**
+ * Javascript specific
+ =====================
+ */
 
 .js-enabled .off-canvas-menu {
-  display: none;
+  display: none; // Hide when JS is enabled
+
+  @media (min-width:$query) {
+    display: block; // Show again when screen is wide enough
+  }
 }
 
 .off-canvas-menu.opened {
-  display: block;
-}
-
-@media (min-width:8000px) {
-
-  #outer-wrapper {
-    display: table;
-    display: flex;
-  }
-
-  .off-canvas-menu {
-    position: relative;
-    display: table-cell;
-    flex: 0 0 $menuwidth;
-  }
-
-  .container {
-    min-height: 100%;
-    display: table-cell;
-    flex: 1 1 auto;
-  }
-
-  nav#left-menu {
-    left: 0;
-  }
-
-  nav#right-menu {
-    left: auto;
-  }
-
-  .off-canvas-menu-toggle {
-    display: none;
-  }
-
-  .js-enabled .off-canvas-menu {
-    display: block;
-  }
-
-}
-
-.container {
-  text-align: center;
-  background: #16a085;
-  color: white;
-  padding: 20px;
-
-  h1 {
-    font-weight: normal;
-    margin: 0;
-  }
+  display: block; // Show when menu is opened
 }

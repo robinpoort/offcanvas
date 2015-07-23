@@ -14,3 +14,22 @@ html {
 *:focus {
   outline: 2px solid #f1c40f;
 }
+
+// The container
+.container {
+  text-align: center;
+  background: #16a085;
+  color: white;
+  padding: 20px;
+  min-height: 100%;
+
+  @media (min-width:$query) {
+    display: table-cell; // Faking flexbox for older browsers
+    flex: 1 1 auto;
+  }
+
+  h1 {
+    font-weight: normal;
+    margin: 0;
+  }
+}

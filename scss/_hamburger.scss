@@ -11,6 +11,10 @@
   top: 0;
   z-index: 3;
 
+  @media (min-width:$query) {
+    display: none; // hide toggle buttons when screen is wide enough
+  }
+
   .bar1,
   .bar2,
   .bar3 {
