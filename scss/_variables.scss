@@ -1,6 +1,7 @@
 // Vars
 $menuwidth: 260px;
-$transition: all 350ms cubic-bezier(.15,.8,.2,.93);
+$transition-time-easing: 350ms cubic-bezier(.2,.57,.44,.83);
+$transition: all $transition-time-easing;
 $query: 8000px;
 
 // Hamburger

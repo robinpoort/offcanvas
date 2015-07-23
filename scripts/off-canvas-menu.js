@@ -6,11 +6,12 @@
         self.$menu.show();
         self.$menuExpandedClassTarget['addClass'](self.menuExpandedClass);
         self.$menuToggle.attr({'aria-expanded': 'true'});
-        self.$wrapper.parent().css('overflow-x', 'hidden');
+        self.$wrapper.addClass('opened').parent().css('overflow-x', 'hidden');
         self.$wrapper.on("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(e) {
             // When $wrapper transition has ended add the 'opened' class
             // We do this to always win over the closing transitionend
             self.$menu.addClass('opened');
+            self.$wrapper.addClass('opened');
         });
     }
 
@@ -22,6 +23,7 @@
             // Remove style and class only on transationend
             // We do this so the menu stays visible on closing
             self.$menu.removeAttr('style').removeClass('opened');
+            self.$wrapper.removeClass('opened');
         });
     }
 

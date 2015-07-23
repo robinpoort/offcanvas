@@ -33,7 +33,7 @@
   z-index: -1;
   display: block;
   opacity: 0;
-  transition: $transition;
+  transition: opacity $transition-time-easing;
 }
 
 
@@ -55,6 +55,12 @@
 .show-right-menu {
   .off-canvas-overlay {
     opacity: .75;
+
+  }
+}
+
+.opened {
+  .off-canvas-overlay {
     z-index: 1;
     right: -10px; // Make sure the overlay is behind the nav so we won't get weird jumps
     left: -10px; // Make sure the overlay is behind the nav so we won't get weird jumps
