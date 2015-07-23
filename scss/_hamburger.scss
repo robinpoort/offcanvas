@@ -9,6 +9,11 @@
   margin: 10px;
   position: absolute;
   top: 0;
+  z-index: 3;
+
+  &:focus {
+    outline: 2px solid #f1c40f;
+  }
 
   .bar1,
   .bar2,
@@ -43,4 +48,22 @@
 
 #right-menu-toggle {
   right: 0;
+}
+
+.show-left-menu .off-canvas-menu-toggle#left-menu-toggle,
+.show-right-menu .off-canvas-menu-toggle#right-menu-toggle {
+  .bar1 {
+    top: 20px;
+    transform: rotate(135deg);
+  }
+
+  .bar2 {
+    transform: translate(-100%, 0);
+    opacity: 0;
+  }
+
+  .bar3 {
+    top: 20px;
+    transform: rotate(-135deg);
+  }
 }

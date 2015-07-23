@@ -14,14 +14,12 @@
         $(document).ready(function () {
             new OffCanvasMenuController({
                 $menu: $('#left-menu'),
-                $menuToggle: $('#left-menu-toggle'),
-                menuExpandedClass: 'show-left-menu'
+                $menuToggle: $('#left-menu-toggle')
             });
 
             new OffCanvasMenuController({
                 $menu: $('#right-menu'),
                 $menuToggle: $('#right-menu-toggle'),
-                menuExpandedClass: 'show-right-menu',
                 position: 'right'
             });
         });

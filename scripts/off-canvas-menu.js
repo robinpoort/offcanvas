@@ -4,10 +4,8 @@
 
     function openMenu(self) {
         self.$menu.show().addClass('opened');
-        setTimeout(function() {
-            self.$menuExpandedClassTarget['addClass'](self.menuExpandedClass);
-            self.$menuToggle.attr({'aria-expanded': 'true'}).attr('disabled', 'disabled');
-        }, 100);
+        self.$menuExpandedClassTarget['addClass'](self.menuExpandedClass);
+        self.$menuToggle.attr({'aria-expanded': 'true'});
     }
 
     function closeMenu(self, transitionDuration) {
@@ -16,8 +14,13 @@
         self.$overlay.removeAttr('style');
         setTimeout(function() {
             self.$menu.removeAttr('style').removeClass('opened');
-            self.$menuToggle.removeAttr('disabled');
         }, transitionDuration);
+    }
+
+    function toggleMenu(self, transitionDuration) {
+        var method = !self.$menuExpandedClassTarget.hasClass(self.menuExpandedClass) ? 'closed' : 'opened';
+        if ( method === 'closed' ) { openMenu(self); }
+        if ( method === 'opened' ) { closeMenu(self, transitionDuration); }
     }
 
     window.OffCanvasMenuController = function(options){
@@ -27,18 +30,17 @@
         // The menu
         this.$menu = options.$menu;
         this.menu = this.$menu[0];
-        this.menuExpandedClass = options.menuExpandedClass;
+        this.position = options.position || 'left';
+        this.menuExpandedClass = options.menuExpandedClass || 'show-' + this.position + '-menu';
 
         // Escape if the menu is not found.
-        if(this.$menu.length == 0 || !this.menuExpandedClass)
+        if(this.$menu.length == 0)
             return;
 
         this.$menuToggle = options.$menuToggle || [];
-        this.position = options.position || 'left';
         this.$wrapper = options.wrapper || this.$menu.parent();
         this.wrapper = this.$wrapper[0];
         this.$menuExpandedClassTarget = options.$menuExpandedClassTarget || this.$wrapper;
-        this.dragHandleOffset = options.dragHandleOffset || this.$menuToggle.outerWidth();
         this.expandedWidth = this.$menu.outerWidth();
         this.ariaControls = options.ariaControls || this.$menu.selector.replace('#', '');
 
@@ -51,11 +53,10 @@
         this.overlayOpacity = options.overlayOpacity || '0.75';
 
         // Get set transition
-        var transition = this.$menu.css('transition-duration');
-        this.transitionDuration = transition.replace('s', '') * 1000;
+        this.transitionDuration = this.$wrapper.css('transition-duration').replace('s', '') * 1000;
 
         // If we have a toggle button available
-        if(this.$menuToggle.length > 0){
+        if(this.$menuToggle.length){
             var self = this;
 
             // Set ARIA attributes
@@ -65,10 +66,10 @@
                 'aria-expanded': 'false'
             });
 
-            // Set up toggle button:
+            // Toggle button:
             this.$menuToggle.click(function(event){
                 event.stopPropagation();
-                openMenu(self, self.transitionDuration);
+                toggleMenu(self, self.transitionDuration);
             });
 
             // Close menu by clicking anywhere
@@ -162,8 +163,8 @@
         },
 
         inBounds: function(position){
-            return (this.position == 'left' && position >= 0 && position <= this.expandedWidth) ||
-                (position >= -this.expandedWidth && position <= 0);
+            return (this.position == 'left' && position >= -25 && position <= this.expandedWidth) ||
+                (this.position == 'right' && position >= -this.expandedWidth && position <= 25);
         },
 
         onTouchStart: function(e){
@@ -189,7 +190,7 @@
             this.isScrolling = undefined;
 
             // set transition time to 0 for 1-to-1 touch movement
-            this.menu.style.MozTransitionDuration = this.menu.style.webkitTransitionDuration = 0;
+            this.wrapper.style.MozTransitionDuration = this.wrapper.style.webkitTransitionDuration = 0;
 
             e.stopPropagation();
         },
@@ -214,12 +215,15 @@
 
                 var opacity = (this.overlayOpacity / this.expandedWidth) * Math.abs(newPos);
 
+                $('#test').html(newPos + ' ' + Math.abs(newPos) + ' ' + this.position + ' ' + this.expandedWidth);
+
                 if(!this.inBounds(newPos))
                     return;
 
                 // translate immediately 1-to-1
-                this.menu.style.MozTransform = this.menu.style.webkitTransform = 'translate(' + newPos + 'px,0)';
+                this.wrapper.style.MozTransform = this.wrapper.style.webkitTransform = 'translate(' + newPos + 'px,0)';
                 this.overlay.style.opacity = opacity;
+
 
                 e.stopPropagation();
             }
@@ -229,8 +233,6 @@
 
         onTouchEnd: function(e){
 
-            var self = this;
-
             // Escape if invalid start:
             if(!this.start)
                 return;
@@ -238,18 +240,19 @@
             var newPos = this.position == 'left' ? this.start.startingX + this.deltaX
                 : this.deltaX - ($(window).width() - this.start.startingX);
 
-            // Converting into positive number
-            newPos = Math.abs(newPos);
+            // Converting to positive number
+            var absNewPos = Math.abs(newPos);
 
             // if not scrolling vertically
             if (!this.isScrolling) {
 
-                this.$menu.removeAttr('style');
+                this.$wrapper.removeAttr('style');
 
-                if ( newPos <= (self.expandedWidth * 0.66) ) {
-                    closeMenu(self, self.transitionDuration);
+                if ( ( this.position == 'left' && ( absNewPos <= (this.expandedWidth * 0.66) || newPos <= 0 ) ) ||
+                     ( this.position == 'right' && ( absNewPos <= (this.expandedWidth * 0.66) || newPos >= 0 ) ) ) {
+                    closeMenu(this, this.transitionDuration);
                 } else {
-                    openMenu(self);
+                    openMenu(this);
                     this.$overlay.removeAttr('style');
                 }
             }

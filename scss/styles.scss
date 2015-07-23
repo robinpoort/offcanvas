@@ -22,6 +22,10 @@ html {
   box-sizing: border-box;
 }
 
+*:focus {
+  outline: 2px solid #f1c40f;
+}
+
 /* Needed classes */
 #outer-wrapper {
   width: 100%;
@@ -44,11 +48,11 @@ html {
   transition: $transition;
 }
 
-.show-left-menu #left-menu {
+.show-left-menu {
   transform: translate($menuwidth, 0);
 }
 
-.show-right-menu #right-menu {
+.show-right-menu {
   transform: translate(-$menuwidth, 0);
 }
 
@@ -105,7 +109,7 @@ nav#right-menu {
   display: block;
 }
 
-@media (min-width:800px) {
+@media (min-width:8000px) {
 
   #outer-wrapper {
     display: table;
