@@ -81,12 +81,17 @@
             });
 
             // Close menu by clicking anywhere
-            this.$wrapper.click(function(){
-                closeMenu(self, self.transitionDuration);
+            this.$wrapper.click(function(event){
+                if ( self.$menuExpandedClassTarget.hasClass(self.menuExpandedClass) ) {
+                    event.stopPropagation();
+                    closeMenu(self, self.transitionDuration);
+                }
             });
 
             // Don't close the menu when clicked on sidemenu
-            this.$menu.click(function(event){ event.stopPropagation(); });
+            this.$menu.click(function(event){
+                event.stopPropagation();
+            });
 
             // Keyboard accessible left menu
             if (this.position === 'left') {
@@ -128,8 +133,9 @@
             }
 
             // Close menu if esc keydown and menu is open and set focus to toggle button
-            $(document).bind('keydown', function(e) {
-                if (e.keyCode === 27 && self.$menuExpandedClassTarget.hasClass(self.menuExpandedClass)) {
+            $(document).bind('keydown', function(event) {
+                if (event.keyCode === 27 && self.$menuExpandedClassTarget.hasClass(self.menuExpandedClass)) {
+                    event.stopPropagation();
                     closeMenu(self, self.transitionDuration);
                     self.$menuToggle.focus();
                 }
