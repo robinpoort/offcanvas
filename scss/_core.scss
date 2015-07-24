@@ -80,7 +80,7 @@
 .show-left-menu,
 .show-right-menu {
   .off-canvas-overlay {
-    opacity: .75; // 1
+    opacity: .5; // 1
   }
 }
 
@@ -140,4 +140,15 @@
 
 .off-canvas-menu.opened {
   display: block; // 7
+}
+
+
+
+/**
+ * Disable transitions
+ * ===================
+ */
+
+.no-transition {
+  transition: none !important;
 }
