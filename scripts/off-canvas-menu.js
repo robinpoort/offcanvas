@@ -137,7 +137,6 @@
                     self.$menuToggle.focus();
                 }
             });
-
         }
 
         // add event listeners
