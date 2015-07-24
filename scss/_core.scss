@@ -141,3 +141,9 @@
 .off-canvas-menu.opened {
   display: block; // 7
 }
+
+
+
+.no-transition {
+  transition: none !important;
+}

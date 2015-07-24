@@ -10,16 +10,13 @@
     <script src="js/off-canvas-menu.min.js"></script>
 
     <script>
-        "use strict";
         $(document).ready(function () {
-            new OffCanvasMenuController({
-                $menu: $('#left-menu'),
-                $menuToggle: $('#left-menu-toggle')
+            $('#left-menu').offCanvasMenu({
+                menuToggle: $('#left-menu-toggle')
             });
 
-            new OffCanvasMenuController({
-                $menu: $('#right-menu'),
-                $menuToggle: $('#right-menu-toggle'),
+            $('#right-menu').offCanvasMenu({
+                menuToggle: $('#right-menu-toggle'),
                 position: 'right'
             });
         });
@@ -82,6 +79,8 @@
 </div>
 
 <div id="test"></div>
+<div id="test2"></div>
+<div id="test3"></div>
 
 </body>
 </html>

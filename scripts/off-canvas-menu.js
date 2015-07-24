@@ -1,270 +1,329 @@
+/* @preserve
+ * Off canvas menu
+ * Copyright 2015 Robin Poort
+ * http://www.robinpoort.com
+ */
+
 "use strict";
 
-(function(window) {
+(function($) {
 
-    function tabToggle(self) {
-        // When tabbing on toggle button
-        self.$menuToggle.bind('keydown', function(e) {
-            if (e.keyCode === 9 && self.$menuToggle.is(':visible')) {
-                e.preventDefault();
-                if ( e.shiftKey ) {
-                    self.$menu.find(':tabbable').last().focus();
-                } else {
-                    self.$menu.find(':tabbable').first().focus();
-                }
+    $.offCanvasMenu = function(element, options) {
+
+        var defaults = {
+                menu: $(element),
+                position: 'left',
+                menuExpandedClass: 'show-left-menu',
+                container: $(element).parent(),
+                menuToggle: [],
+                expandedWidth: $(element).outerWidth(),
+                offCanvasOverlay: 'off-canvas-overlay'
+            },
+            plugin = this;
+
+
+        plugin.settings = {};
+
+        plugin.init = function() {
+
+            plugin.settings = $.extend({}, defaults, options);
+
+            var $element = $(element),
+                element = element,
+                menu = plugin.settings.menu,
+                position = plugin.settings.position,
+                menuExpandedClass = plugin.settings.menuExpandedClass,
+                container = plugin.settings.container,
+                menuToggle = plugin.settings.menuToggle,
+                ariaControls = plugin.settings.ariaControls,
+                wrapper = container.parent(),
+                expandedWidth = menu.outerWidth(),
+                offCanvasOverlay = $('.' + plugin.settings.offCanvasOverlay);
+
+            // Set proper menuExpandedClass if not set manually
+            if ( position === 'right' && !options.menuExpandedClass ) {
+                menuExpandedClass = 'show-right-menu';
             }
-        });
 
-        // When tabbing on first tabbable menu item
-        self.$menu.find(':tabbable').first().bind('keydown', function(e) {
-            if (e.keyCode === 9 && self.$menuToggle.is(':visible')) {
-                if ( e.shiftKey ) {
-                    e.preventDefault();
-                    self.$menuToggle.focus();
-                }
+            // Set proper menuExpandedClass if not set manually
+            if ( wrapper.is('body') ) {
+                wrapper = $('html, body');
             }
-        });
 
-        // When tabbing on last tabbable menu item
-        self.$menu.find(':tabbable').last().bind('keydown', function(e) {
-            if (e.keyCode === 9 && self.$menuToggle.is(':visible')) {
-                if ( !e.shiftKey ) {
-                    e.preventDefault();
-                    self.$menuToggle.focus();
-                }
+            // Create overlay container
+            if ( !offCanvasOverlay.length ) {
+                container.append('<div class="' + plugin.settings.offCanvasOverlay + '"></div>');
             }
-        });
-    }
 
-    function openMenu(self) {
-        self.$menu.show();
-        self.$menuExpandedClassTarget['addClass'](self.menuExpandedClass);
-        self.$menuToggle.attr({'aria-expanded': 'true'});
-        self.$wrapper.addClass('opened').parent().css('overflow-x', 'hidden');
-        self.$wrapper.on("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(e) {
-            // When $wrapper transition has ended add the 'opened' class
-            // We do this to always win over the closing transitionend
-            self.$menu.addClass('opened');
-            self.$wrapper.addClass('opened');
-        });
-        // Enable toggling
-        tabToggle(self);
-    }
+            // Vars after corrections
+            var overlay = $('.' + plugin.settings.offCanvasOverlay),
+                overlayOpacity = '0.75',
+                transitionDuration = container.css('transition-duration').replace('s', '') * 1000;
 
-    function closeMenu(self, transitionDuration) {
-        self.$menuExpandedClassTarget['removeClass'](self.menuExpandedClass);
-        self.$menuToggle.attr({'aria-expanded': 'false'});
-        self.$overlay.removeAttr('style');
-        self.$wrapper.on("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(e) {
-            // Remove style and class only on transationend
-            // We do this so the menu stays visible on closing
-            self.$menu.removeAttr('style').removeClass('opened');
-            self.$wrapper.removeClass('opened');
-        });
-    }
+            function tabToggle(menu) {
+                // When tabbing on toggle button
+                menuToggle.bind('keydown', function(e) {
+                    if (e.keyCode === 9 && menuToggle.is(':visible')) {
+                        e.preventDefault();
+                        if ( e.shiftKey ) {
+                            menu.find(':tabbable').last().focus();
+                        } else {
+                            menu.find(':tabbable').first().focus();
+                        }
+                    }
+                });
 
-    function toggleMenu(self, transitionDuration) {
-        var method = !self.$menuExpandedClassTarget.hasClass(self.menuExpandedClass) ? 'closed' : 'opened';
-        if ( method === 'closed' ) { openMenu(self); }
-        if ( method === 'opened' ) { closeMenu(self, transitionDuration); }
-    }
+                // When tabbing on first tabbable menu item
+                menu.find(':tabbable').first().bind('keydown', function(e) {
+                    if (e.keyCode === 9 && menuToggle.is(':visible')) {
+                        if ( e.shiftKey ) {
+                            e.preventDefault();
+                            menuToggle.focus();
+                        }
+                    }
+                });
 
-    window.OffCanvasMenuController = function(options){
+                // When tabbing on last tabbable menu item
+                menu.find(':tabbable').last().bind('keydown', function(e) {
+                    if (e.keyCode === 9 && menuToggle.is(':visible')) {
+                        if ( !e.shiftKey ) {
+                            e.preventDefault();
+                            menuToggle.focus();
+                        }
+                    }
+                });
+            }
 
-        options = options || {};
+            function openMenu(menu) {
+                menu.show();
+                container.addClass(menuExpandedClass);
+                menuToggle.attr({'aria-expanded': 'true'});
+                container.addClass('opened');
+                wrapper.css({'overflow-x': 'hidden', 'position': 'relative'});
+                container.on("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(e) {
+                    // When container transition has ended add the 'opened' class
+                    // We do this to always win over the closing transitionend
+                    menu.addClass('opened');
+                    container.addClass('opened');
+                    wrapper.css({'overflow-x': 'hidden', 'position': 'relative'});
+                });
+                // Enable toggling
+                tabToggle(menu);
+            }
 
-        // The menu
-        this.$menu = options.$menu;
-        this.position = options.position || 'left';
-        this.menuExpandedClass = options.menuExpandedClass || 'show-' + this.position + '-menu';
+            function closeMenu(menu) {
+                container.removeClass(menuExpandedClass);
+                menuToggle.attr({'aria-expanded': 'false'});
+                //overlay.removeAttr('style');
+                container.on("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(e) {
+                    // Remove style and class only on transationend
+                    // We do this so the menu stays visible on closing
+                    menu.removeAttr('style').removeClass('opened');
+                    container.removeClass('opened');
+                    wrapper.removeAttr('style');
+                });
+            }
 
-        // Escape if the menu is not found.
-        if(this.$menu.length == 0)
-            return;
+            function toggleMenu(menu, transitionDuration) {
+                var method = !container.hasClass(menuExpandedClass) ? 'closed' : 'opened';
+                if ( method === 'closed' ) { openMenu(menu); }
+                if ( method === 'opened' ) { closeMenu(menu, transitionDuration); }
+            }
 
-        this.$menuToggle = options.$menuToggle || [];
-        this.$wrapper = options.wrapper || this.$menu.parent();
-        this.wrapper = this.$wrapper[0];
-        this.$menuExpandedClassTarget = options.$menuExpandedClassTarget || this.$wrapper;
-        this.expandedWidth = this.$menu.outerWidth();
-        this.ariaControls = options.ariaControls || this.$menu.selector.replace('#', '');
-        this.offCanvasOverlay = options.offCanvasOverlay || 'off-canvas-overlay';
-        this.$offCanvasOverlay = $('.' + this.offCanvasOverlay);
-        // The overlay
-        if ( !this.$offCanvasOverlay.length ) {
-            this.$wrapper.append('<div class="' + this.offCanvasOverlay + '"></div>');
-        }
-        this.$overlay = $('.' + this.offCanvasOverlay);
-        this.overlay = this.$overlay[0];
-        this.overlayOpacity = options.overlayOpacity || '0.75';
-        this.transitionDuration = this.$wrapper.css('transition-duration').replace('s', '') * 1000;
+            // If we have a toggle button available
+            if(menuToggle.length){
 
-        // If we have a toggle button available
-        if(this.$menuToggle.length){
-            var self = this;
+                // Set ARIA attributes
+                menuToggle.attr({
+                    'role': 'button',
+                    'aria-controls': ariaControls,
+                    'aria-expanded': 'false'
+                });
 
-            // Set ARIA attributes
-            this.$menuToggle.attr({
-                'role': 'button',
-                'aria-controls': self.ariaControls,
-                'aria-expanded': 'false'
-            });
-
-            // Toggle button:
-            this.$menuToggle.click(function(event){
-                event.stopPropagation();
-                toggleMenu(self, self.transitionDuration);
-            });
-
-            // Close menu by clicking anywhere
-            this.$wrapper.click(function(event){
-                if ( self.$menuExpandedClassTarget.hasClass(self.menuExpandedClass) ) {
+                // Toggle button:
+                menuToggle.click(function(event){
                     event.stopPropagation();
-                    closeMenu(self, self.transitionDuration);
-                }
-            });
+                    toggleMenu(menu, transitionDuration);
+                });
 
-            // Don't close the menu when clicked on sidemenu
-            this.$menu.click(function(event){
-                event.stopPropagation();
-            });
+                // Close menu by clicking anywhere
+                container.click(function(event){
+                    if ( container.hasClass(menuExpandedClass) ) {
+                        event.stopPropagation();
+                        closeMenu(menu, transitionDuration);
+                    }
+                });
 
-            // Close menu if esc keydown and menu is open and set focus to toggle button
-            $(document).bind('keydown', function(event) {
-                if (event.keyCode === 27 && self.$menuExpandedClassTarget.hasClass(self.menuExpandedClass)) {
+                // Don't close the menu when clicked on sidemenu
+                menu.click(function(event){
                     event.stopPropagation();
-                    closeMenu(self, self.transitionDuration);
-                    self.$menuToggle.focus();
-                }
-            });
-        }
+                });
 
-        // add event listeners
-        if (this.wrapper.addEventListener) {
-            this.wrapper.addEventListener('touchstart', this, false);
-            this.wrapper.addEventListener('touchmove', this, false);
-            this.wrapper.addEventListener('touchend', this, false);
-            this.wrapper.addEventListener('touchcancel', this, false);
-        }
-
-    }
-
-    window.OffCanvasMenuController.prototype = {
-
-        start: null,
-
-        handleEvent: function (e) {
-            switch (e.type) {
-                case 'touchstart': this.onTouchStart(e); break;
-                case 'touchmove':  this.onTouchMove(e); break;
-                case 'touchcancel':
-                case 'touchend': this.onTouchEnd(e); break;
-            }
-        },
-
-        currentPosition: function(){
-            return this.position == 'left' ? this.$menu.offset().left + this.expandedWidth
-                : this.$menu.offset().left;
-        },
-
-        inBounds: function(position){
-            return (this.position == 'left' && position >= -25 && position <= this.expandedWidth) ||
-                (this.position == 'right' && position >= -this.expandedWidth && position <= 25);
-        },
-
-        onTouchStart: function(e){
-
-            // Escape if Menu is closed
-            if(!this.$menuExpandedClassTarget.hasClass(this.menuExpandedClass))
-                return;
-
-            var pageX = e.touches[0].pageX;
-
-            this.start = {
-                startingX: this.currentPosition(),
-
-                // get touch coordinates for delta calculations in onTouchMove
-                pageX: pageX,
-                pageY: e.touches[0].pageY
-            };
-
-            // reset deltaX
-            this.deltaX = this.$wrapper.position().left;
-
-            // used for testing first onTouchMove event
-            this.isScrolling = undefined;
-
-            // set transition time to 0 for 1-to-1 touch movement
-            this.wrapper.style.MozTransitionDuration = this.wrapper.style.webkitTransitionDuration = 0;
-            this.overlay.style.MozTransitionDuration = this.overlay.style.webkitTransitionDuration = 0;
-
-            e.stopPropagation();
-        },
-
-        onTouchMove: function(e){
-
-            this.deltaX = e.touches[0].pageX - this.start.pageX;
-
-            // determine if scrolling test has run - one time test
-            if (typeof this.isScrolling == 'undefined') {
-                this.isScrolling = !!(this.isScrolling || Math.abs(this.deltaX) < Math.abs(e.touches[0].pageY - this.start.pageY));
+                // Close menu if esc keydown and menu is open and set focus to toggle button
+                $(document).bind('keydown', function(event) {
+                    if (event.keyCode === 27 && container.hasClass(menuExpandedClass)) {
+                        event.stopPropagation();
+                        closeMenu(menu, transitionDuration);
+                        menuToggle.focus();
+                    }
+                });
             }
 
-            // if user is not trying to scroll vertically
-            if (!this.isScrolling) {
 
-                // prevent native scrolling
-                e.preventDefault();
+            // Touch actions
+            if ('ontouchstart' in document.documentElement) {
+                wrapper.on('touchstart', onTouchStart);
+                wrapper.on('touchmove', onTouchMove);
+                wrapper.on('touchend', onTouchEnd);
+            }
 
-                var newPos = this.position == 'left' ? this.start.startingX + this.deltaX
-                    : this.deltaX - ($(window).width() - this.start.startingX);
+            // vars
+            var started = null,
+                start = {},
+                deltaX,
+                pageX,
+                isScrolling = false;
 
-                var opacity = (this.overlayOpacity / this.expandedWidth) * Math.abs(newPos);
+            // Functions
+            function currentPosition() {
+                return position == 'left' ? menu.offset().left + expandedWidth
+                    : menu.offset().left;
+            }
 
-                if(!this.inBounds(newPos))
+            function inBounds(newPos) {
+                return (position == 'left' && newPos >= -25 && newPos <= expandedWidth) ||
+                    (position == 'right' && newPos >= -(expandedWidth) && newPos <= 25);
+            }
+
+            function onTouchStart(e) {
+
+                // Escape if Menu is closed
+                if(!container.hasClass(menuExpandedClass))
                     return;
 
-                // translate immediately 1-to-1
-                this.wrapper.style.MozTransform = this.wrapper.style.webkitTransform = 'translate(' + newPos + 'px,0)';
-                this.overlay.style.opacity = opacity;
+                // Set started to true (used by touchend)
+                started = true;
+
+                // Get original starting point
+                pageX = e.originalEvent.touches[0].pageX;
+
+                // Setting the start object for 'move' and 'end'
+                start = {
+                    startingX: currentPosition(),
+                    // get touch coordinates for delta calculations in onTouchMove
+                    pageX: pageX,
+                    pageY: e.originalEvent.touches[0].pageY
+                };
+
+                // reset deltaX
+                deltaX = container.position().left;
+
+                // used for testing first onTouchMove event
+                isScrolling = undefined;
+
+                // Add class to remove transition for 1-to-1 touch movement
+                container.addClass('no-transition');
+                overlay.addClass('no-transition');
 
                 e.stopPropagation();
             }
 
+            function onTouchMove(e) {
 
-        },
+                deltaX = e.originalEvent.touches[0].pageX - start.pageX;
 
-        onTouchEnd: function(e){
-
-            // Escape if invalid start:
-            if(!this.start)
-                return;
-
-            var newPos = this.position == 'left' ? this.start.startingX + this.deltaX
-                : this.deltaX - ($(window).width() - this.start.startingX);
-
-            // Converting to positive number
-            var absNewPos = Math.abs(newPos);
-
-            // if not scrolling vertically
-            if (!this.isScrolling) {
-
-                this.$wrapper.removeAttr('style');
-
-                if ( ( this.position == 'left' && ( absNewPos <= (this.expandedWidth * 0.66) || newPos <= 0 ) ) ||
-                    ( this.position == 'right' && ( absNewPos <= (this.expandedWidth * 0.66) || newPos >= 0 ) ) ) {
-                    closeMenu(this, this.transitionDuration);
-                } else {
-                    openMenu(this);
-                    this.$overlay.removeAttr('style');
+                // determine if scrolling test has run - one time test
+                if (typeof isScrolling == 'undefined') {
+                    isScrolling = !!(isScrolling || Math.abs(deltaX) < Math.abs(e.originalEvent.touches[0].pageY - start.pageY));
                 }
+
+                // if user is not trying to scroll vertically
+                if (!isScrolling) {
+
+                    // prevent native scrolling
+                    e.preventDefault();
+
+                    var newPos = position == 'left' ? start.startingX + deltaX
+                        : deltaX - ($(window).width() - start.startingX);
+
+                    var opacity = (overlayOpacity / expandedWidth) * Math.abs(newPos);
+
+                    if(!inBounds(newPos))
+                        return;
+
+                    // translate immediately 1-to-1
+                    $(container).css({
+                        '-webkit-transform' : 'translate(' + newPos + 'px, 0)',
+                        '-moz-transform'    : 'translate(' + newPos + 'px, 0)',
+                        '-ms-transform'     : 'translate(' + newPos + 'px, 0)',
+                        '-o-transform'      : 'translate(' + newPos + 'px, 0)',
+                        'transform'         : 'translate(' + newPos + 'px, 0)'
+                    });
+                    overlay.css('opacity' ,opacity);
+
+                    e.stopPropagation();
+                }
+
+
             }
 
-            // Reset start object:
-            this.start = null;
+            function onTouchEnd(e){
 
-            e.stopPropagation();
-        }
+                // Escape if invalid start:
+                if(!started)
+                    return;
 
+                // Escape if Menu is closed
+                if(!container.hasClass(menuExpandedClass))
+                    return;
+
+                var newPos = position == 'left' ? start.startingX + deltaX
+                    : deltaX - ($(window).width() - start.startingX);
+
+                // Converting to positive number
+                var absNewPos = Math.abs(newPos);
+
+                // if not scrolling vertically
+                if (!isScrolling) {
+
+                    container.removeAttr('style').removeClass('no-transition');
+                    overlay.removeAttr('style').removeClass('no-transition');
+
+                    if ( ( position == 'left' && ( absNewPos <= (expandedWidth * 0.66) || newPos <= 0 ) ) ||
+                        ( position == 'right' && ( absNewPos <= (expandedWidth * 0.66) || newPos >= 0 ) ) ) {
+                        closeMenu(menu, transitionDuration);
+                    } else {
+                        openMenu(menu);
+                    }
+                }
+
+                // Reset start object and starting variable:
+                started = null;
+                start = {};
+
+                e.stopPropagation();
+            }
+
+        };
+
+        plugin.init();
+
+    };
+
+
+    // add the plugin to the jQuery.fn object
+    $.fn.offCanvasMenu = function(options) {
+        // iterate through the DOM elements we are attaching the plugin to
+        return this.each(function() {
+            // if plugin has not already been attached to the element
+            if (undefined == $(this).data('offCanvasMenu')) {
+                // create a new instance of the plugin
+                var plugin = new $.offCanvasMenu(this, options);
+                // in the jQuery version of the element
+                // store a reference to the plugin object
+                $(this).data('offCanvasMenu', plugin);
+            }
+        });
     }
-})(window);
+
+})(jQuery);
