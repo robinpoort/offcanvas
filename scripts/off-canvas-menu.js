@@ -63,7 +63,7 @@
             function tabToggle(menu) {
                 // When tabbing on toggle button
                 menuToggle.bind('keydown', function(e) {
-                    if (e.keyCode === 9 && menuToggle.is(':visible')) {
+                    if (e.keyCode === 9 && menu.is(':visible')) {
                         e.preventDefault();
                         if ( e.shiftKey ) {
                             menu.find(':tabbable').last().focus();
@@ -75,7 +75,7 @@
 
                 // When tabbing on first tabbable menu item
                 menu.find(':tabbable').first().bind('keydown', function(e) {
-                    if (e.keyCode === 9 && menuToggle.is(':visible')) {
+                    if (e.keyCode === 9 && menu.is(':visible')) {
                         if ( e.shiftKey ) {
                             e.preventDefault();
                             menuToggle.focus();
@@ -85,7 +85,7 @@
 
                 // When tabbing on last tabbable menu item
                 menu.find(':tabbable').last().bind('keydown', function(e) {
-                    if (e.keyCode === 9 && menuToggle.is(':visible')) {
+                    if (e.keyCode === 9 && menu.is(':visible')) {
                         if ( !e.shiftKey ) {
                             e.preventDefault();
                             menuToggle.focus();
