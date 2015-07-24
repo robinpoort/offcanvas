@@ -6,6 +6,7 @@
 
 "use strict";
 
+
 (function($) {
 
     $.offCanvasMenu = function(element, options) {
@@ -52,13 +53,9 @@
 
             // Create overlay container
             if ( !offCanvasOverlay.length ) {
-                container.append('<div class="' + plugin.settings.offCanvasOverlay + '"></div>');
+                container.append('<div class="' + plugin.settings.offCanvasOverlay + '">');
+                var overlay = $('.' + plugin.settings.offCanvasOverlay);
             }
-
-            // Vars after corrections
-            var overlay = $('.' + plugin.settings.offCanvasOverlay),
-                overlayOpacity = '0.75',
-                transitionDuration = container.css('transition-duration').replace('s', '') * 1000;
 
             function tabToggle(menu) {
                 // When tabbing on toggle button
@@ -124,14 +121,15 @@
                 });
             }
 
-            function toggleMenu(menu, transitionDuration) {
+            function toggleMenu(menu) {
                 var method = !container.hasClass(menuExpandedClass) ? 'closed' : 'opened';
                 if ( method === 'closed' ) { openMenu(menu); }
-                if ( method === 'opened' ) { closeMenu(menu, transitionDuration); }
+                if ( method === 'opened' ) { closeMenu(menu); }
             }
 
             // If we have a toggle button available
             if(menuToggle.length){
+
 
                 // Set ARIA attributes
                 menuToggle.attr({
@@ -143,14 +141,14 @@
                 // Toggle button:
                 menuToggle.click(function(event){
                     event.stopPropagation();
-                    toggleMenu(menu, transitionDuration);
+                    toggleMenu(menu);
                 });
 
                 // Close menu by clicking anywhere
                 container.click(function(event){
                     if ( container.hasClass(menuExpandedClass) ) {
                         event.stopPropagation();
-                        closeMenu(menu, transitionDuration);
+                        closeMenu(menu);
                     }
                 });
 
@@ -163,7 +161,7 @@
                 $(document).bind('keydown', function(event) {
                     if (event.keyCode === 27 && container.hasClass(menuExpandedClass)) {
                         event.stopPropagation();
-                        closeMenu(menu, transitionDuration);
+                        closeMenu(menu);
                         menuToggle.focus();
                     }
                 });
@@ -182,6 +180,7 @@
                 start = {},
                 deltaX,
                 pageX,
+                overlayOpacity,
                 isScrolling = false;
 
             // Functions
@@ -220,6 +219,9 @@
 
                 // used for testing first onTouchMove event
                 isScrolling = undefined;
+
+                // Get the opacity of the overlay
+                overlayOpacity = overlay.css('opacity');
 
                 // Add class to remove transition for 1-to-1 touch movement
                 container.addClass('no-transition');
@@ -291,7 +293,7 @@
 
                     if ( ( position == 'left' && ( absNewPos <= (expandedWidth * 0.66) || newPos <= 0 ) ) ||
                         ( position == 'right' && ( absNewPos <= (expandedWidth * 0.66) || newPos >= 0 ) ) ) {
-                        closeMenu(menu, transitionDuration);
+                        closeMenu(menu);
                     } else {
                         openMenu(menu);
                     }
