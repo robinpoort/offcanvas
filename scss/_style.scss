@@ -26,7 +26,7 @@ html {
   height: 100%;
 
   @media (min-width:$query) {
-    display: table; // Faking flexbox for older browsers
+    display: table;
     display: flex;
   }
 }
@@ -38,7 +38,8 @@ html {
   padding: 1em;
 
   @media (min-width:$query) {
-    display: table-cell; // Faking flexbox for older browsers
+    display: table-cell;
+    min-width: $menuwidth;
     flex: 0 0 $menuwidth;
   }
 
@@ -66,9 +67,10 @@ html {
   color: white;
   padding: 20px;
   min-height: 100%;
+  width: 100%;
 
   @media (min-width:$query) {
-    display: table-cell; // Faking flexbox for older browsers
+    display: table-cell;
     flex: 1 1 auto;
   }
 

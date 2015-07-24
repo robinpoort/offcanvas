@@ -5,7 +5,7 @@
     function tabToggle(self) {
         // When tabbing on toggle button
         self.$menuToggle.bind('keydown', function(e) {
-            if (e.keyCode === 9 && self.$menuExpandedClassTarget.hasClass(self.menuExpandedClass)) {
+            if (e.keyCode === 9 && self.$menuToggle.is(':visible')) {
                 e.preventDefault();
                 if ( e.shiftKey ) {
                     self.$menu.find(':tabbable').last().focus();
@@ -17,7 +17,7 @@
 
         // When tabbing on first tabbable menu item
         self.$menu.find(':tabbable').first().bind('keydown', function(e) {
-            if (e.keyCode === 9 && self.$menuExpandedClassTarget.hasClass(self.menuExpandedClass)) {
+            if (e.keyCode === 9 && self.$menuToggle.is(':visible')) {
                 if ( e.shiftKey ) {
                     e.preventDefault();
                     self.$menuToggle.focus();
@@ -27,7 +27,7 @@
 
         // When tabbing on last tabbable menu item
         self.$menu.find(':tabbable').last().bind('keydown', function(e) {
-            if (e.keyCode === 9 && self.$menuExpandedClassTarget.hasClass(self.menuExpandedClass)) {
+            if (e.keyCode === 9 && self.$menuToggle.is(':visible')) {
                 if ( !e.shiftKey ) {
                     e.preventDefault();
                     self.$menuToggle.focus();
