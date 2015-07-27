@@ -16,7 +16,7 @@
                 position: 'left',
                 menuExpandedClass: 'show-left-menu',
                 openedClass: 'opened',
-                noTransitionClass: 'opened',
+                noTransitionClass: 'no-transition',
                 wrapper: $(element).parent(),
                 container: $('.container'),
                 menuToggle: [],

@@ -150,10 +150,9 @@
  * ===================
  */
 
-.no-transition {
-  transition: none;
+.no-transition.no-transition {
+  transition: none !important;
 }
-
 
 .opened--left {
   .off-canvas-menu--left {
