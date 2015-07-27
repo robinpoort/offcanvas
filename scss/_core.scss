@@ -1,12 +1,13 @@
 /**
- * The off canvas wrapper
- * ======================
- * 1. Set to relative so the menu is placed correctly when using position: absolute
- * 2. Hide menus behind the content
+ * The transitioning container
+ * ===========================
+ * 1. Set transition to transforms only
+ * 2. Set the z-index higher than the menus
  */
 
-.off-canvas-wrapper {
-  position: relative; // 1
+.container {
+  transition: transform $transition-time-easing; // 1
+  position: relative; // 2
   z-index: 2; // 2
 }
 
@@ -15,7 +16,7 @@
 /**
  * The overlay
  * ===========
- * 1. Cover the entire wrapper
+ * 1. Cover the entire container
  * 2. Hide by setting z-index to -1 because item can't transition if display is set from none to block
  * 3. Set opacity to 0 by default
  * 4. Hide overlay when screen is wide enough
@@ -42,53 +43,42 @@
 
 
 /**
- * The transitioning container
- * ===========================
- * 1. Set transition to transforms only
- * 2. Set the z-index higher than the menus
- */
-
-.container {
-  transition: transform $transition-time-easing; // 1
-  position: relative; // 2
-  z-index: 2; // 2
-}
-
-
-
-/**
  * Container when toggled
  * ======================
  * 1. Set left to the width of the menu so the menu will appear
  * 2. Set right to the negative width of the menu so the menu will appear
- * 3. Reset translate when screen is wide enough
+ * 3. Reset when screen is wide enough
  * 4. Set a box shadow so menus appear behind container
  */
 
 .show-left-menu {
   .container {
     transform: translate($menuwidth, 0); // 1
-  }
 
-  @media (min-width:$query) {
-    transform: translate(0, 0); // 3
+    @media (min-width:$query) {
+      transform: translate(0, 0); // 3
+    }
   }
 }
 
 .show-right-menu {
   .container {
     transform: translate(-$menuwidth, 0); // 2
-  }
 
-  @media (min-width:$query) {
-    transform: translate(0, 0); // 3
+    @media (min-width:$query) {
+      transform: translate(0, 0); // 3
+    }
   }
 }
 
-.opened {
+.opened--left,
+.opened--right {
   .container {
     overflow: hidden;
-    box-shadow: 0 0 10px rgba(0,0,0,.5); // 4
+
+    @media (min-width:$query) {
+      overflow: auto; // 3
+    }
   }
 }
 
@@ -108,7 +98,8 @@
   }
 }
 
-.opened {
+.opened--left,
+.opened--left {
   .off-canvas-overlay {
     z-index: 2; // 2
   }
@@ -160,5 +151,18 @@
  */
 
 .no-transition {
-  transition: none !important;
+  transition: none;
+}
+
+
+.opened--left {
+  .off-canvas-menu--left {
+    display: block;
+  }
+}
+
+.opened--right {
+  .off-canvas-menu--right {
+    display: block;
+  }
 }

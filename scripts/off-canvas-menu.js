@@ -16,6 +16,7 @@
                 position: 'left',
                 menuExpandedClass: 'show-left-menu',
                 openedClass: 'opened',
+                noTransitionClass: 'opened',
                 wrapper: $(element).parent(),
                 container: $('.container'),
                 menuToggle: [],
@@ -35,12 +36,15 @@
                 position = plugin.settings.position,
                 menuExpandedClass = plugin.settings.menuExpandedClass,
                 openedClass = plugin.settings.openedClass,
+                noTransitionClass = plugin.settings.noTransitionClass,
                 wrapper = plugin.settings.wrapper,
                 container = plugin.settings.container,
                 menuToggle = plugin.settings.menuToggle,
                 ariaControls = plugin.settings.ariaControls,
                 expandedWidth = menu.outerWidth(),
-                offCanvasOverlay = $('.' + plugin.settings.offCanvasOverlay);
+                offCanvasOverlay = $('.' + plugin.settings.offCanvasOverlay),
+                transitionDuration = Math.round(parseFloat(container.css('transition-duration')) * 1000),
+                timeout;
 
             // Set proper menuExpandedClass if not set manually
             if ( position === 'right' && !options.menuExpandedClass ) {
@@ -95,46 +99,37 @@
             }
 
             function openMenu(menu) {
+                // Clear the timeout when user clicks open menu
+                clearTimeout(timeout);
+
                 // Set to expanded for accessibility
                 menuToggle.attr({'aria-expanded': 'true'});
 
-                // Display the actual menu
-                menu.show();
-
                 // Add classes and CSS to the wrapper
                 // All styling in CSS comes from this parent element
-                wrapper.addClass(menuExpandedClass).addClass(openedClass).css({'overflow-x': 'hidden', 'position': 'relative'});
-
-                // Run (almost) everything again on transitionend to win over closing transitionend
-                // We do this in case manual toggling happens before transitionend has ended
-                wrapper.on("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(e) {
-                    menu.show();
-                    wrapper.addClass(menuExpandedClass).addClass(openedClass).css({'overflow-x': 'hidden', 'position': 'relative'});
-                });
+                wrapper.addClass(menuExpandedClass + ' ' + openedClass + '--' + position).css({'overflow-x': 'hidden', 'position': 'relative'});
 
                 // Enable tabbing within menu
                 tabToggle(menu);
             }
 
-            function closeMenu(menu) {
+            function closeMenu() {
                 // Set to collapsed for accessibility
                 menuToggle.attr({'aria-expanded': 'false'});
 
                 // Remove the expanded class to activate the transition
                 wrapper.removeClass(menuExpandedClass);
 
-                // Remove style and class only on transationend
-                // We do this so the menu stays visible on closing
-                wrapper.on("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(e) {
-                    menu.removeAttr('style');
-                    wrapper.removeAttr('style').removeClass(openedClass).removeClass(menuExpandedClass);
-                });
+                // Remove style and class when transition has ended, so the menu stays visible on closing
+                timeout = setTimeout(function() {
+                    wrapper.removeClass(menuExpandedClass + ' ' + openedClass + '--' + position).removeAttr('style');
+                }, transitionDuration);
             }
 
             function toggleMenu(menu) {
                 var method = !wrapper.hasClass(menuExpandedClass) ? 'closed' : 'opened';
                 if ( method === 'closed' ) { openMenu(menu); }
-                if ( method === 'opened' ) { closeMenu(menu); }
+                if ( method === 'opened' ) { closeMenu(); }
             }
 
             // If we have a toggle button available
@@ -157,7 +152,7 @@
                 wrapper.click(function(event){
                     if ( wrapper.hasClass(menuExpandedClass) ) {
                         event.stopPropagation();
-                        closeMenu(menu);
+                        closeMenu();
                     }
                 });
 
@@ -170,7 +165,7 @@
                 $(document).bind('keydown', function(event) {
                     if (event.keyCode === 27 && wrapper.hasClass(menuExpandedClass)) {
                         event.stopPropagation();
-                        closeMenu(menu);
+                        closeMenu();
                         menuToggle.focus();
                     }
                 });
@@ -233,8 +228,8 @@
                 overlayOpacity = overlay.css('opacity');
 
                 // Add class to remove transition for 1-to-1 touch movement
-                container.addClass('no-transition');
-                overlay.addClass('no-transition');
+                container.addClass(noTransitionClass);
+                overlay.addClass(noTransitionClass);
 
                 e.stopPropagation();
             }
@@ -297,12 +292,12 @@
                 // if not scrolling vertically
                 if (!isScrolling) {
 
-                    container.removeAttr('style').removeClass('no-transition');
-                    overlay.removeAttr('style').removeClass('no-transition');
+                    container.removeAttr('style').removeClass(noTransitionClass);
+                    overlay.removeAttr('style').removeClass(noTransitionClass);
 
                     if ( ( position == 'left' && ( absNewPos <= (expandedWidth * 0.66) || newPos <= 0 ) ) ||
                         ( position == 'right' && ( absNewPos <= (expandedWidth * 0.66) || newPos >= 0 ) ) ) {
-                        closeMenu(menu);
+                        closeMenu();
                     } else {
                         openMenu(menu);
                     }
