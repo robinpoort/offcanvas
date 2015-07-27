@@ -49,11 +49,10 @@
  */
 
 .container {
-  position: relative;
   transition: transform $transition-time-easing; // 1
+  position: relative; // 2
   z-index: 2; // 2
 }
-
 
 
 
@@ -88,6 +87,7 @@
 
 .opened {
   .container {
+    overflow: hidden;
     box-shadow: 0 0 10px rgba(0,0,0,.5); // 4
   }
 }
@@ -99,8 +99,6 @@
  * ====================
  * 1. Set opacity
  * 2. Set z-index to 1 so it will become visible
- * 3. Hide overlay behind the menu for smooth visual transitions.
- *    We only do this on toggle so we won't get horizontal scrollbars when not toggled
  */
 
 .show-left-menu,
@@ -112,9 +110,7 @@
 
 .opened {
   .off-canvas-overlay {
-    z-index: 1; // 2
-    right: -10px; // 3
-    left: -10px; // 3
+    z-index: 2; // 2
   }
 }
 
@@ -154,10 +150,6 @@
   &--right {
     right: 0; // 2
   }
-}
-
-.off-canvas-menu.opened {
-  display: block; // 7
 }
 
 

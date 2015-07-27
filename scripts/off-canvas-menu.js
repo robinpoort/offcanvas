@@ -15,6 +15,7 @@
                 menu: $(element),
                 position: 'left',
                 menuExpandedClass: 'show-left-menu',
+                openedClass: 'opened',
                 wrapper: $(element).parent(),
                 container: $('.container'),
                 menuToggle: [],
@@ -30,16 +31,14 @@
 
             plugin.settings = $.extend({}, defaults, options);
 
-            var $element = $(element),
-                element = element,
-                menu = plugin.settings.menu,
+            var menu = plugin.settings.menu,
                 position = plugin.settings.position,
                 menuExpandedClass = plugin.settings.menuExpandedClass,
+                openedClass = plugin.settings.openedClass,
                 wrapper = plugin.settings.wrapper,
                 container = plugin.settings.container,
                 menuToggle = plugin.settings.menuToggle,
                 ariaControls = plugin.settings.ariaControls,
-                outer = wrapper.parent(),
                 expandedWidth = menu.outerWidth(),
                 offCanvasOverlay = $('.' + plugin.settings.offCanvasOverlay);
 
@@ -49,13 +48,13 @@
             }
 
             // Set proper menuExpandedClass if not set manually
-            if ( outer.is('body') ) {
-                outer = $('html, body');
+            if ( wrapper.is('body') ) {
+                wrapper = $('html, body');
             }
 
             // Create overlay wrapper
             if ( !offCanvasOverlay.length ) {
-                wrapper.append('<div class="' + plugin.settings.offCanvasOverlay + '">');
+                container.append('<div class="' + plugin.settings.offCanvasOverlay + '">');
             }
 
             // Get the overlay layer
@@ -64,7 +63,7 @@
             function tabToggle(menu) {
                 // When tabbing on toggle button
                 menuToggle.bind('keydown', function(e) {
-                    if (e.keyCode === 9 && menu.is(':visible')) {
+                    if (e.keyCode === 9 && wrapper.hasClass(menuExpandedClass) ) {
                         e.preventDefault();
                         if ( e.shiftKey ) {
                             menu.find(':tabbable').last().focus();
@@ -76,7 +75,7 @@
 
                 // When tabbing on first tabbable menu item
                 menu.find(':tabbable').first().bind('keydown', function(e) {
-                    if (e.keyCode === 9 && menu.is(':visible')) {
+                    if (e.keyCode === 9 && wrapper.hasClass(menuExpandedClass) ) {
                         if ( e.shiftKey ) {
                             e.preventDefault();
                             menuToggle.focus();
@@ -86,7 +85,7 @@
 
                 // When tabbing on last tabbable menu item
                 menu.find(':tabbable').last().bind('keydown', function(e) {
-                    if (e.keyCode === 9 && menu.is(':visible')) {
+                    if (e.keyCode === 9 && wrapper.hasClass(menuExpandedClass) ) {
                         if ( !e.shiftKey ) {
                             e.preventDefault();
                             menuToggle.focus();
@@ -96,32 +95,39 @@
             }
 
             function openMenu(menu) {
-                menu.show();
-                wrapper.addClass(menuExpandedClass);
+                // Set to expanded for accessibility
                 menuToggle.attr({'aria-expanded': 'true'});
-                wrapper.addClass('opened');
-                outer.css({'overflow-x': 'hidden', 'position': 'relative'});
+
+                // Display the actual menu
+                menu.show();
+
+                // Add classes and CSS to the wrapper
+                // All styling in CSS comes from this parent element
+                wrapper.addClass(menuExpandedClass).addClass(openedClass).css({'overflow-x': 'hidden', 'position': 'relative'});
+
+                // Run (almost) everything again on transitionend to win over closing transitionend
+                // We do this in case manual toggling happens before transitionend has ended
                 wrapper.on("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(e) {
-                    // When wrapper transition has ended add the 'opened' class
-                    // We do this to always win over the closing transitionend
-                    menu.addClass('opened');
-                    wrapper.addClass('opened');
-                    outer.css({'overflow-x': 'hidden', 'position': 'relative'});
+                    menu.show();
+                    wrapper.addClass(menuExpandedClass).addClass(openedClass).css({'overflow-x': 'hidden', 'position': 'relative'});
                 });
-                // Enable toggling
+
+                // Enable tabbing within menu
                 tabToggle(menu);
             }
 
             function closeMenu(menu) {
-                wrapper.removeClass(menuExpandedClass);
+                // Set to collapsed for accessibility
                 menuToggle.attr({'aria-expanded': 'false'});
-                //overlay.removeAttr('style');
+
+                // Remove the expanded class to activate the transition
+                wrapper.removeClass(menuExpandedClass);
+
+                // Remove style and class only on transationend
+                // We do this so the menu stays visible on closing
                 wrapper.on("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(e) {
-                    // Remove style and class only on transationend
-                    // We do this so the menu stays visible on closing
-                    menu.removeAttr('style').removeClass('opened');
-                    wrapper.removeClass('opened');
-                    outer.removeAttr('style');
+                    menu.removeAttr('style');
+                    wrapper.removeAttr('style').removeClass(openedClass).removeClass(menuExpandedClass);
                 });
             }
 
@@ -133,7 +139,6 @@
 
             // If we have a toggle button available
             if(menuToggle.length){
-
 
                 // Set ARIA attributes
                 menuToggle.attr({
@@ -174,9 +179,9 @@
 
             // Touch actions
             if ('ontouchstart' in document.documentElement) {
-                outer.on('touchstart', onTouchStart);
-                outer.on('touchmove', onTouchMove);
-                outer.on('touchend', onTouchEnd);
+                wrapper.on('touchstart', onTouchStart);
+                wrapper.on('touchmove', onTouchMove);
+                wrapper.on('touchend', onTouchEnd);
             }
 
             // vars
