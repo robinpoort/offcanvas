@@ -2,13 +2,12 @@
  * The off canvas wrapper
  * ======================
  * 1. Set to relative so the menu is placed correctly when using position: absolute
- * 2. Since we are transforming this element it needs transition
+ * 2. Hide menus behind the content
  */
 
 .off-canvas-wrapper {
   position: relative; // 1
-  transition: $transition; // 2
-  z-index: 0;
+  z-index: 2; // 2
 }
 
 
@@ -43,15 +42,34 @@
 
 
 /**
- * Wrapper when toggled
- * ====================
+ * The transitioning container
+ * ===========================
+ * 1. Set transition to transforms only
+ * 2. Set the z-index higher than the menus
+ */
+
+.container {
+  position: relative;
+  transition: transform $transition-time-easing; // 1
+  z-index: 2; // 2
+}
+
+
+
+
+/**
+ * Container when toggled
+ * ======================
  * 1. Set left to the width of the menu so the menu will appear
  * 2. Set right to the negative width of the menu so the menu will appear
  * 3. Reset translate when screen is wide enough
+ * 4. Set a box shadow so menus appear behind container
  */
 
 .show-left-menu {
-  transform: translate($menuwidth, 0); // 1
+  .container {
+    transform: translate($menuwidth, 0); // 1
+  }
 
   @media (min-width:$query) {
     transform: translate(0, 0); // 3
@@ -59,10 +77,18 @@
 }
 
 .show-right-menu {
-  transform: translate(-$menuwidth, 0); // 2
+  .container {
+    transform: translate(-$menuwidth, 0); // 2
+  }
 
   @media (min-width:$query) {
     transform: translate(0, 0); // 3
+  }
+}
+
+.opened {
+  .container {
+    box-shadow: 0 0 10px rgba(0,0,0,.5); // 4
   }
 }
 
@@ -98,11 +124,11 @@
  * Javascript specific
  * ===================
  * 1. Set the width of the menu
- * 2. Position the menu so it's off the viewport
+ * 2. Position the menu
  * 3. Set height to 100% and make div overflowable
- * 4. Set a higher index then the overlay
+ * 4. Set a lower index than the container
  * 5. Hide menu when JS is enabled
- * 6. Make menu visible when screen si wide enough
+ * 6. Make menu visible when screen is wide enough
  * 7. Always show menu when toggled and in animation
  */
 
@@ -112,7 +138,7 @@
   top: 0; // 2
   height: 100%; //3
   overflow: auto; // 3
-  z-index: 2; // 4
+  z-index: 1; // 4
   display: none; // 5
   -webkit-overflow-scrolling: touch;
 
@@ -122,19 +148,11 @@
   }
 
   &--left {
-    left: -$menuwidth; // 2
-
-    @media (min-width:$query) {
-      left: 0; // 6
-    }
+    left: 0; // 2
   }
 
   &--right {
-    left: 100%; // 2
-
-    @media (min-width:$query) {
-      left: auto; // 6
-    }
+    right: 0; // 2
   }
 }
 
