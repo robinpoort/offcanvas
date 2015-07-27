@@ -54,8 +54,10 @@
             // Create overlay container
             if ( !offCanvasOverlay.length ) {
                 container.append('<div class="' + plugin.settings.offCanvasOverlay + '">');
-                var overlay = $('.' + plugin.settings.offCanvasOverlay);
             }
+
+            // Get the overlay layer
+            var overlay = $('.' + plugin.settings.offCanvasOverlay);
 
             function tabToggle(menu) {
                 // When tabbing on toggle button
@@ -254,14 +256,14 @@
                         return;
 
                     // translate immediately 1-to-1
-                    $(container).css({
+                    container.css({
                         '-webkit-transform' : 'translate(' + newPos + 'px, 0)',
                         '-moz-transform'    : 'translate(' + newPos + 'px, 0)',
                         '-ms-transform'     : 'translate(' + newPos + 'px, 0)',
                         '-o-transform'      : 'translate(' + newPos + 'px, 0)',
                         'transform'         : 'translate(' + newPos + 'px, 0)'
                     });
-                    overlay.css('opacity' ,opacity);
+                    overlay.css('opacity', opacity);
 
                     e.stopPropagation();
                 }
