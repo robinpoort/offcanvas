@@ -79,3 +79,15 @@ html {
     margin: 0;
   }
 }
+
+
+.opened--left,
+.opened--right {
+  .container {
+    box-shadow: 0 0 10px rgba(0,0,0,.5);
+
+    @media (min-width:$query) {
+      box-shadow: none;
+    }
+  }
+}

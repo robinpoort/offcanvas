@@ -1,14 +1,14 @@
 /**
- * The off canvas wrapper
- * ======================
- * 1. Set to relative so the menu is placed correctly when using position: absolute
- * 2. Since we are transforming this element it needs transition
+ * The transitioning container
+ * ===========================
+ * 1. Set transition to transforms only
+ * 2. Set the z-index higher than the menus
  */
 
-.off-canvas-wrapper {
-  position: relative; // 1
-  transition: $transition; // 2
-  z-index: 0;
+.container {
+  transition: transform $transition-time-easing; // 1
+  position: relative; // 2
+  z-index: 2; // 2
 }
 
 
@@ -16,7 +16,7 @@
 /**
  * The overlay
  * ===========
- * 1. Cover the entire wrapper
+ * 1. Cover the entire container
  * 2. Hide by setting z-index to -1 because item can't transition if display is set from none to block
  * 3. Set opacity to 0 by default
  * 4. Hide overlay when screen is wide enough
@@ -43,26 +43,42 @@
 
 
 /**
- * Wrapper when toggled
- * ====================
+ * Container when toggled
+ * ======================
  * 1. Set left to the width of the menu so the menu will appear
  * 2. Set right to the negative width of the menu so the menu will appear
- * 3. Reset translate when screen is wide enough
+ * 3. Reset when screen is wide enough
+ * 4. Set a box shadow so menus appear behind container
  */
 
 .show-left-menu {
-  transform: translate($menuwidth, 0); // 1
+  .container {
+    transform: translate($menuwidth, 0); // 1
 
-  @media (min-width:$query) {
-    transform: translate(0, 0); // 3
+    @media (min-width:$query) {
+      transform: translate(0, 0); // 3
+    }
   }
 }
 
 .show-right-menu {
-  transform: translate(-$menuwidth, 0); // 2
+  .container {
+    transform: translate(-$menuwidth, 0); // 2
 
-  @media (min-width:$query) {
-    transform: translate(0, 0); // 3
+    @media (min-width:$query) {
+      transform: translate(0, 0); // 3
+    }
+  }
+}
+
+.opened--left,
+.opened--right {
+  .container {
+    overflow: hidden;
+
+    @media (min-width:$query) {
+      overflow: auto; // 3
+    }
   }
 }
 
@@ -73,8 +89,6 @@
  * ====================
  * 1. Set opacity
  * 2. Set z-index to 1 so it will become visible
- * 3. Hide overlay behind the menu for smooth visual transitions.
- *    We only do this on toggle so we won't get horizontal scrollbars when not toggled
  */
 
 .show-left-menu,
@@ -84,11 +98,10 @@
   }
 }
 
-.opened {
+.opened--left,
+.opened--left {
   .off-canvas-overlay {
-    z-index: 1; // 2
-    right: -10px; // 3
-    left: -10px; // 3
+    z-index: 2; // 2
   }
 }
 
@@ -98,11 +111,11 @@
  * Javascript specific
  * ===================
  * 1. Set the width of the menu
- * 2. Position the menu so it's off the viewport
+ * 2. Position the menu
  * 3. Set height to 100% and make div overflowable
- * 4. Set a higher index then the overlay
+ * 4. Set a lower index than the container
  * 5. Hide menu when JS is enabled
- * 6. Make menu visible when screen si wide enough
+ * 6. Make menu visible when screen is wide enough
  * 7. Always show menu when toggled and in animation
  */
 
@@ -112,7 +125,7 @@
   top: 0; // 2
   height: 100%; //3
   overflow: auto; // 3
-  z-index: 2; // 4
+  z-index: 1; // 4
   display: none; // 5
   -webkit-overflow-scrolling: touch;
 
@@ -122,24 +135,12 @@
   }
 
   &--left {
-    left: -$menuwidth; // 2
-
-    @media (min-width:$query) {
-      left: 0; // 6
-    }
+    left: 0; // 2
   }
 
   &--right {
-    left: 100%; // 2
-
-    @media (min-width:$query) {
-      left: auto; // 6
-    }
+    right: 0; // 2
   }
-}
-
-.off-canvas-menu.opened {
-  display: block; // 7
 }
 
 
@@ -149,6 +150,18 @@
  * ===================
  */
 
-.no-transition {
+.no-transition.no-transition {
   transition: none !important;
+}
+
+.opened--left {
+  .off-canvas-menu--left {
+    display: block;
+  }
+}
+
+.opened--right {
+  .off-canvas-menu--right {
+    display: block;
+  }
 }
