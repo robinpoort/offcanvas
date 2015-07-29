@@ -184,3 +184,15 @@
     display: block;
   }
 }
+
+
+
+/**
+ * The toggle button
+ * =================
+ * 1. To fight the 300ms delay on IE (mobile)
+ */
+
+.off-canvas-menu-toggle {
+  touch-action: manipulation;
+}
