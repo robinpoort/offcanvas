@@ -205,9 +205,9 @@
 
             function onTouchStart(e) {
 
-                // Escape if Menu is closed
-                if(!wrapper.hasClass(menuExpandedClass))
+                if(!wrapper.hasClass(menuExpandedClass)) {
                     return;
+                }
 
                 // Set started to true (used by touchend)
                 started = true;
@@ -237,9 +237,14 @@
                 overlay.addClass(noTransitionClass);
 
                 e.stopPropagation();
+
             }
 
             function onTouchMove(e) {
+
+                if(!wrapper.hasClass(menuExpandedClass)) {
+                    return;
+                }
 
                 deltaX = e.originalEvent.touches[0].pageX - start.pageX;
 
