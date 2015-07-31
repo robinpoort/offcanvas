@@ -107,13 +107,18 @@
 
                 // Add classes and CSS to the wrapper
                 // All styling in CSS comes from this parent element
-                wrapper.addClass(menuExpandedClass + ' ' + openedClass + '--' + position).css({'overflow-x': 'hidden', 'position': 'relative'});
+                wrapper.addClass(menuExpandedClass + ' ' + openedClass + '--' + position);
 
                 // Enable tabbing within menu
-                tabToggle(menu);
+                timeout = setTimeout(function() {
+                   tabToggle(menu);
+                }, transitionDuration);
             }
 
             function closeMenu() {
+                // Clear the timeout when user clicks close menu
+                clearTimeout(timeout);
+
                 // Set to collapsed for accessibility
                 menuToggle.attr({'aria-expanded': 'false'});
 
@@ -122,7 +127,7 @@
 
                 // Remove style and class when transition has ended, so the menu stays visible on closing
                 timeout = setTimeout(function() {
-                    wrapper.removeClass(menuExpandedClass + ' ' + openedClass + '--' + position).removeAttr('style');
+                    wrapper.removeClass(openedClass + '--' + position);
                 }, transitionDuration);
             }
 
@@ -200,9 +205,9 @@
 
             function onTouchStart(e) {
 
-                // Escape if Menu is closed
-                if(!wrapper.hasClass(menuExpandedClass))
+                if(!wrapper.hasClass(menuExpandedClass)) {
                     return;
+                }
 
                 // Set started to true (used by touchend)
                 started = true;
@@ -232,9 +237,14 @@
                 overlay.addClass(noTransitionClass);
 
                 e.stopPropagation();
+
             }
 
             function onTouchMove(e) {
+
+                if(!wrapper.hasClass(menuExpandedClass)) {
+                    return;
+                }
 
                 deltaX = e.originalEvent.touches[0].pageX - start.pageX;
 

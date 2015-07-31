@@ -43,6 +43,25 @@
 
 
 /**
+ * Wrapper when toggled
+ * ====================
+ * 1. Hide overflowing when menu is toggled
+ * 2. Set back to auto when screen is wide enough
+ */
+
+.opened--left,
+.opened--right {
+  position: relative; // 1
+  overflow: hidden; // 1
+
+  @media (min-width:$query) {
+    overflow: auto; // 2
+  }
+}
+
+
+
+/**
  * Container when toggled
  * ======================
  * 1. Set left to the width of the menu so the menu will appear
@@ -164,4 +183,16 @@
   .off-canvas-menu--right {
     display: block;
   }
+}
+
+
+
+/**
+ * The toggle button
+ * =================
+ * 1. To fight the 300ms delay on IE (mobile)
+ */
+
+.off-canvas-menu-toggle {
+  touch-action: manipulation;
 }
