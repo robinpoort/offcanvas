@@ -2,6 +2,8 @@
 
 Accessible off canvas menu / area based on https://gist.github.com/jmyrland/5450222
 
+View a demo on: http://robinpoort.github.io/offcanvas/
+
 ##Features
 
 * Works with CSS3 transitions to run at a smooth 60FPS
