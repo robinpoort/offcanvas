@@ -1,14 +1,20 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Off canvas menu example</title>
+    <title>Off Canvas Area</title>
     <link href="css/styles.css" rel="stylesheet">
-
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <!-- Load jQuery from Google CDN -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+    <!-- For local development when internet is not available -->
+    <script>window.jQuery || document.write('<script src="/bower_components/jquery/dist/jquery.min.js"><\/script>')</script>
+
+    <!-- loading the off canvas script -->
     <script src="js/off-canvas-menu.min.js"></script>
 
+    <!-- initializing the off canvas script -->
     <script>
         $(document).ready(function () {
             $('#left-menu').offCanvasMenu({
@@ -30,8 +36,10 @@
 <body>
 <script type="text/javascript">var el = document.body;var cl = 'js-enabled';if (el.classList) {el.classList.add(cl);} else {el.className += ' ' + cl;}</script>
 
+<!-- The wrapper -->
 <div class="off-canvas-wrapper">
 
+    <!-- Left menu / area -->
     <nav id="left-menu" class="off-canvas-menu off-canvas-menu--left">
         <h2>Left menu</h2>
         <ul>
@@ -96,63 +104,113 @@
                 <a href="#">Link 20</a>
             </li>
         </ul>
-    </nav>
+    </nav><!-- .off-canvas-menu--left -->
 
+    <!-- The content container -->
     <div class="container">
 
+        <!-- The toggle button for the left menu / area -->
         <button type="button" id="left-menu-toggle" class="off-canvas-menu-toggle" title="left sidebar toggle" aria-label="left sidebar toggle">
             <span class="bar1"></span>
             <span class="bar2"></span>
             <span class="bar3"></span>
-        </button>
+        </button><!-- off-canvas-menu-toggle -->
 
-        <h1>Hello world!</h1>
+        <!-- The actual content -->
+        <h1>Page heading</h1>
 
-        <p>A lot of content to be able to scroll</p>
-        <p>A lot of content to be able to scroll</p>
-        <p>A lot of content to be able to scroll</p>
-        <p>A lot of content to be able to scroll</p>
-        <p>A lot of content to be able to scroll</p>
-        <p>A lot of content to be able to scroll</p>
-        <p>A lot of content to be able to scroll</p>
-        <p>A lot of content to be able to scroll</p>
-        <p>A lot of content to be able to scroll</p>
-        <p>A lot of content to be able to scroll</p>
-        <p>A lot of content to be able to scroll</p>
-        <p>A lot of content to be able to scroll</p>
-        <p>A lot of content to be able to scroll</p>
-        <p>A lot of content to be able to scroll</p>
-        <p>A lot of content to be able to scroll</p>
-        <p>A lot of content to be able to scroll</p>
-        <p>A lot of content to be able to scroll</p>
-        <p>A lot of content to be able to scroll</p>
-        <p>A lot of content to be able to scroll</p>
-        <p>A lot of content to be able to scroll</p>
-        <p>A lot of content to be able to scroll</p>
-        <p>A lot of content to be able to scroll</p>
-        <p>A lot of content to be able to scroll</p>
+        <p>Donec ullamcorper nulla non metus auctor fringilla. Maecenas faucibus mollis interdum. Etiam porta sem
+            malesuada magna mollis euismod. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut
+            fermentum massa justo sit amet risus.</p>
 
+        <p>Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Donec sed
+            odio dui. Vestibulum id ligula porta felis euismod semper. Etiam porta sem malesuada magna mollis euismod.
+            Aenean lacinia bibendum nulla sed consectetur. Nulla vitae elit libero, a pharetra augue. Morbi leo risus,
+            porta ac consectetur ac, vestibulum at eros.</p>
+
+        <p>Nulla vitae elit libero, a pharetra augue. Praesent commodo cursus magna, vel scelerisque nisl consectetur
+            et. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit.
+            Maecenas sed diam eget risus varius blandit sit amet non magna. Curabitur blandit tempus porttitor. Duis
+            mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit.</p>
+
+        <p>Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Nullam quis risus eget urna mollis
+            ornare vel eu leo. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum id ligula porta felis
+            euismod semper. Curabitur blandit tempus porttitor.</p>
+
+        <p>Donec ullamcorper nulla non metus auctor fringilla. Maecenas faucibus mollis interdum. Etiam porta sem
+            malesuada magna mollis euismod. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut
+            fermentum massa justo sit amet risus.</p>
+
+        <p>Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Donec sed
+            odio dui. Vestibulum id ligula porta felis euismod semper. Etiam porta sem malesuada magna mollis euismod.
+            Aenean lacinia bibendum nulla sed consectetur. Nulla vitae elit libero, a pharetra augue. Morbi leo risus,
+            porta ac consectetur ac, vestibulum at eros.</p>
+
+        <p>Nulla vitae elit libero, a pharetra augue. Praesent commodo cursus magna, vel scelerisque nisl consectetur
+            et. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit.
+            Maecenas sed diam eget risus varius blandit sit amet non magna. Curabitur blandit tempus porttitor. Duis
+            mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit.</p>
+
+        <p>Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Nullam quis risus eget urna mollis
+            ornare vel eu leo. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum id ligula porta felis
+            euismod semper. Curabitur blandit tempus porttitor.</p>
+
+        <p>Donec ullamcorper nulla non metus auctor fringilla. Maecenas faucibus mollis interdum. Etiam porta sem
+            malesuada magna mollis euismod. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut
+            fermentum massa justo sit amet risus.</p>
+
+        <p>Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Donec sed
+            odio dui. Vestibulum id ligula porta felis euismod semper. Etiam porta sem malesuada magna mollis euismod.
+            Aenean lacinia bibendum nulla sed consectetur. Nulla vitae elit libero, a pharetra augue. Morbi leo risus,
+            porta ac consectetur ac, vestibulum at eros.</p>
+
+        <p>Nulla vitae elit libero, a pharetra augue. Praesent commodo cursus magna, vel scelerisque nisl consectetur
+            et. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit.
+            Maecenas sed diam eget risus varius blandit sit amet non magna. Curabitur blandit tempus porttitor. Duis
+            mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit.</p>
+
+        <p>Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Nullam quis risus eget urna mollis
+            ornare vel eu leo. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum id ligula porta felis
+            euismod semper. Curabitur blandit tempus porttitor.</p>
+
+        <p>Donec ullamcorper nulla non metus auctor fringilla. Maecenas faucibus mollis interdum. Etiam porta sem
+            malesuada magna mollis euismod. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut
+            fermentum massa justo sit amet risus.</p>
+
+        <p>Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Donec sed
+            odio dui. Vestibulum id ligula porta felis euismod semper. Etiam porta sem malesuada magna mollis euismod.
+            Aenean lacinia bibendum nulla sed consectetur. Nulla vitae elit libero, a pharetra augue. Morbi leo risus,
+            porta ac consectetur ac, vestibulum at eros.</p>
+
+        <p>Nulla vitae elit libero, a pharetra augue. Praesent commodo cursus magna, vel scelerisque nisl consectetur
+            et. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit.
+            Maecenas sed diam eget risus varius blandit sit amet non magna. Curabitur blandit tempus porttitor. Duis
+            mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit.</p>
+
+        <p>Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Nullam quis risus eget urna mollis
+            ornare vel eu leo. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum id ligula porta felis
+            euismod semper. Curabitur blandit tempus porttitor.</p>
+
+        <!-- The toggle button for the right menu / area -->
         <button type="button" id="right-menu-toggle" class="off-canvas-menu-toggle" title="right sidebar toggle" aria-label="right sidebar toggle">
             <span class="bar1"></span>
             <span class="bar2"></span>
             <span class="bar3"></span>
-        </button>
+        </button><!-- off-canvas-menu-toggle -->
 
-    </div>
+    </div><!-- .container -->
 
+    <!-- Left menu / area -->
     <nav id="right-menu" class="off-canvas-menu off-canvas-menu--right">
         <h2>Right menu</h2>
         <a href="test">Test</a>
         <form>
             <input type="text">
         </form>
-    </nav>
+    </nav><!-- .off-canvas-menu-right -->
 
 </div>
-
-<div id="test"></div>
-<div id="test2"></div>
-<div id="test3"></div>
+<!-- .off-canvas-wrapper -->
 
 </body>
 </html>

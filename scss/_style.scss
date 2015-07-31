@@ -69,7 +69,7 @@ html {
   text-align: center;
   background: #16a085;
   color: white;
-  padding: 20px;
+  padding: 20px 60px;
   min-height: 100%;
   width: 100%;
 
@@ -80,7 +80,12 @@ html {
 
   h1 {
     font-weight: normal;
-    margin: 0;
+    margin: 1em 0 2em;
+  }
+
+  p {
+    max-width: 45em;
+    margin: 1em auto;
   }
 }
 
