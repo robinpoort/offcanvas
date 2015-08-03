@@ -16,6 +16,10 @@ html {
   -webkit-font-smoothing: antialiased;
 }
 
+a {
+  color: white;
+}
+
 // Set a proper focus
 *:focus {
   outline: 2px solid #f1c40f;
@@ -87,6 +91,10 @@ html {
   h1 + p {
     font-size: 1.2em;
     margin: 1em auto 2em;
+  }
+
+  h1 + p + p {
+    margin-bottom: 2em;
   }
 
   p {
