@@ -1,13 +1,13 @@
 // Vars
-$menuwidth: 260px;
-$transition-time-easing: 360ms cubic-bezier(.2,.57,.44,.83);
-$transition: all $transition-time-easing;
-$query: 8000px;
+$menuwidth: 260px !default;
+$transition-time-easing: 360ms cubic-bezier(.2,.57,.44,.83) !default;
+$transition: all $transition-time-easing !default;
+$query: 800px !default;
 
 // Hamburger
-$button-size: 38px;
-$bar-width: 20px; // Best to grab a number that can be divided by 5
-$bar-height: round($bar-width / 5);
+$button-size: 38px !default;
+$bar-width: 20px !default; // Best to grab a number that can be divided by 5
+$bar-height: round($bar-width / 5) !default;
 
 // Overlay
-$overlay-background: #2c3e50;
+$overlay-background: #2c3e50 !default;
