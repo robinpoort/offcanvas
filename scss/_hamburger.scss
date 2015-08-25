@@ -1,6 +1,6 @@
 .off-canvas-menu-toggle {
-  width: $button-size;
-  height: $button-size;
+  width: $ocm-button-size;
+  height: $ocm-button-size;
   border-radius: 3px;
   background: #34495e;
   color: #ecf0f1;
@@ -11,34 +11,34 @@
   top: 0;
   z-index: 3;
 
-  @media (min-width:$query) {
+  @media (min-width:$ocm-query) {
     display: none; // hide toggle buttons when screen is wide enough
   }
 
   .bar1,
   .bar2,
   .bar3 {
-    width: $bar-width;
-    height: $bar-height;
+    width: $ocm-bar-width;
+    height: $ocm-bar-height;
     display: block;
     position: absolute;
-    left: round(($button-size - $bar-width) / 2);
+    left: round(($ocm-button-size - $ocm-bar-width) / 2);
     background: #ecf0f1;
     border-radius: 1px;
     vertical-align: middle;
-    transition: $transition;
+    transition: $ocm-transition;
   }
 
   .bar1 {
-    top: round(($button-size - $bar-width) / 2);
+    top: round(($ocm-button-size - $ocm-bar-width) / 2);
   }
 
   .bar2 {
-    top: round((($button-size - $bar-width) / 2) + ($bar-height * 2));
+    top: round((($ocm-button-size - $ocm-bar-width) / 2) + ($ocm-bar-height * 2));
   }
 
   .bar3 {
-    top: round((($button-size - $bar-width) / 2) + ($bar-height * 4));
+    top: round((($ocm-button-size - $ocm-bar-width) / 2) + ($ocm-bar-height * 4));
   }
 }
 
@@ -53,7 +53,7 @@
 .show-left-menu .off-canvas-menu-toggle#left-menu-toggle,
 .show-right-menu .off-canvas-menu-toggle#right-menu-toggle {
   .bar1 {
-    top: round(($button-size / 2) - ($bar-height / 2));
+    top: round(($ocm-button-size / 2) - ($ocm-bar-height / 2));
     transform: rotate(135deg);
   }
 
@@ -63,7 +63,7 @@
   }
 
   .bar3 {
-    top: round(($button-size / 2) - ($bar-height / 2));
+    top: round(($ocm-button-size / 2) - ($ocm-bar-height / 2));
     transform: rotate(-135deg);
   }
 }

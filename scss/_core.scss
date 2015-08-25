@@ -6,7 +6,7 @@
  */
 
 .container {
-  transition: transform $transition-time-easing; // 1
+  transition: transform $ocm-transition-time-easing; // 1
   position: relative; // 2
   z-index: 2; // 2
 }
@@ -32,10 +32,10 @@
   left: 0; // 1
   z-index: -1; //2
   opacity: 0; // 3
-  background: $overlay-background;
-  transition: opacity $transition-time-easing;
+  background: $ocm-overlay-background;
+  transition: opacity $ocm-transition-time-easing;
 
-  @media (min-width:$query) {
+  @media (min-width:$ocm-query) {
     display: none; // 4
   }
 }
@@ -54,7 +54,7 @@
   position: relative; // 1
   overflow: hidden; // 1
 
-  @media (min-width:$query) {
+  @media (min-width:$ocm-query) {
     overflow: auto; // 2
   }
 }
@@ -72,9 +72,9 @@
 
 .show-left-menu {
   .container {
-    transform: translate($menuwidth, 0); // 1
+    transform: translate($ocm-menuwidth, 0); // 1
 
-    @media (min-width:$query) {
+    @media (min-width:$ocm-query) {
       transform: translate(0, 0); // 3
     }
   }
@@ -82,9 +82,9 @@
 
 .show-right-menu {
   .container {
-    transform: translate(-$menuwidth, 0); // 2
+    transform: translate(-$ocm-menuwidth, 0); // 2
 
-    @media (min-width:$query) {
+    @media (min-width:$ocm-query) {
       transform: translate(0, 0); // 3
     }
   }
@@ -95,7 +95,7 @@
   .container {
     overflow: hidden;
 
-    @media (min-width:$query) {
+    @media (min-width:$ocm-query) {
       overflow: auto; // 3
     }
   }
@@ -139,7 +139,7 @@
  */
 
 .js-enabled .off-canvas-menu {
-  width: $menuwidth; // 1
+  width: $ocm-menuwidth; // 1
   position: absolute; // 2
   top: 0; // 2
   height: 100%; //3
@@ -148,7 +148,7 @@
   display: none; // 5
   -webkit-overflow-scrolling: touch;
 
-  @media (min-width:$query) {
+  @media (min-width:$ocm-query) {
     position: relative; // 6
     display: block; // 6
   }

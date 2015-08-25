@@ -1,13 +1,14 @@
 // Vars
-$menuwidth: 260px !default;
-$transition-time-easing: 360ms cubic-bezier(.2,.57,.44,.83) !default;
-$transition: all $transition-time-easing !default;
-$query: 800px !default;
+$ocm-normalize: true !default;
+$ocm-menuwidth: 260px !default;
+$ocm-transition-time-easing: 360ms cubic-bezier(.2,.57,.44,.83) !default;
+$ocm-transition: all $ocm-transition-time-easing !default;
+$ocm-query: 800px !default;
 
 // Hamburger
-$button-size: 38px !default;
-$bar-width: 20px !default; // Best to grab a number that can be divided by 5
-$bar-height: round($bar-width / 5) !default;
+$ocm-button-size: 38px !default;
+$ocm-bar-width: 20px !default; // Best to grab a number that can be divided by 5
+$ocm-bar-height: round($ocm-bar-width / 5) !default;
 
 // Overlay
-$overlay-background: #2c3e50 !default;
+$ocm-overlay-background: #2c3e50 !default;

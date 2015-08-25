@@ -1,8 +1,10 @@
-// Adding normalize
-@import "../bower_components/normalize-scss/normalize";
-
 // Variables
 @import "variables";
+
+// Adding normalize
+@if $ocm-normalize {
+  @import "../bower_components/normalize-scss/normalize";
+}
 
 // Core
 @import "core";

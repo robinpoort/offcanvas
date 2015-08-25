@@ -30,7 +30,7 @@ a {
   width: 100%;
   height: 100%;
 
-  @media (min-width:$query) {
+  @media (min-width:$ocm-query) {
     display: table;
     display: flex;
   }
@@ -42,10 +42,10 @@ a {
   color: #ecf0f1;
   padding: 1em;
 
-  @media (min-width:$query) {
+  @media (min-width:$ocm-query) {
     display: table-cell;
-    min-width: $menuwidth;
-    flex: 0 0 $menuwidth;
+    min-width: $ocm-menuwidth;
+    flex: 0 0 $ocm-menuwidth;
   }
 
   h2 {
@@ -78,7 +78,7 @@ a {
   min-height: 100%;
   width: 100%;
 
-  @media (min-width:$query) {
+  @media (min-width:$ocm-query) {
     display: table-cell;
     flex: 1 1 auto;
   }
@@ -119,7 +119,7 @@ a {
   .container {
     box-shadow: 0 0 10px rgba(0,0,0,.5);
 
-    @media (min-width:$query) {
+    @media (min-width:$ocm-query) {
       box-shadow: none;
     }
   }
