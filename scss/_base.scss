@@ -34,10 +34,6 @@
   opacity: 0; // 3
   background: $ocm-overlay-background;
   transition: opacity $ocm-transition-time-easing;
-
-  @media (min-width:$ocm-query) {
-    display: none; // 4
-  }
 }
 
 
@@ -53,8 +49,16 @@
 .opened--right {
   position: relative; // 1
   overflow: hidden; // 1
+}
 
-  @media (min-width:$ocm-query) {
+@media (min-width:$ocm-query-left) {
+  .opened--left {
+    overflow: auto; // 2
+  }
+}
+
+@media (min-width:$ocm-query-right) {
+  .opened--right {
     overflow: auto; // 2
   }
 }
@@ -72,9 +76,9 @@
 
 .show-left-menu {
   .container {
-    transform: translate($ocm-menuwidth, 0); // 1
+    transform: translate($ocm-menuwidth-left, 0); // 1
 
-    @media (min-width:$ocm-query) {
+    @media (min-width:$ocm-query-left) {
       transform: translate(0, 0); // 3
     }
   }
@@ -82,9 +86,9 @@
 
 .show-right-menu {
   .container {
-    transform: translate(-$ocm-menuwidth, 0); // 2
+    transform: translate(-$ocm-menuwidth-right, 0); // 2
 
-    @media (min-width:$ocm-query) {
+    @media (min-width:$ocm-query-right) {
       transform: translate(0, 0); // 3
     }
   }
@@ -94,8 +98,20 @@
 .opened--right {
   .container {
     overflow: hidden;
+  }
+}
 
-    @media (min-width:$ocm-query) {
+@media (min-width:$ocm-query-left) {
+  .opened--left {
+    .container {
+      overflow: auto; // 3
+    }
+  }
+}
+
+@media (min-width:$ocm-query-right) {
+  .opened--right {
+    .container {
       overflow: auto; // 3
     }
   }
@@ -118,7 +134,7 @@
 }
 
 .opened--left,
-.opened--left {
+.opened--right {
   .off-canvas-overlay {
     z-index: 2; // 2
   }
@@ -139,7 +155,6 @@
  */
 
 .js-enabled .off-canvas-menu {
-  width: $ocm-menuwidth; // 1
   position: absolute; // 2
   top: 0; // 2
   height: 100%; //3
@@ -148,17 +163,25 @@
   display: none; // 5
   -webkit-overflow-scrolling: touch;
 
-  @media (min-width:$ocm-query) {
-    position: relative; // 6
-    display: block; // 6
-  }
 
   &--left {
+    width: $ocm-menuwidth-left; // 1
     left: 0; // 2
+
+    @media (min-width:$ocm-query-left) {
+      position: relative; // 6
+      display: block; // 6
+    }
   }
 
   &--right {
+    width: $ocm-menuwidth-right; // 1
     right: 0; // 2
+
+    @media (min-width:$ocm-query-right) {
+      position: relative; // 6
+      display: block; // 6
+    }
   }
 }
 

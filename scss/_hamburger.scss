@@ -11,8 +11,16 @@
   top: 0;
   z-index: 3;
 
-  @media (min-width:$ocm-query) {
-    display: none; // hide toggle buttons when screen is wide enough
+  &#left-menu-toggle {
+    @media (min-width:$ocm-query-left) {
+      display: none; // hide toggle buttons when screen is wide enough
+    }
+  }
+
+  &#right-menu-toggle {
+    @media (min-width:$ocm-query-right) {
+      display: none; // hide toggle buttons when screen is wide enough
+    }
   }
 
   .bar1,

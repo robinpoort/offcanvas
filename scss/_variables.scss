@@ -1,8 +1,10 @@
 // Vars
-$ocm-menuwidth: 260px !default;
+$ocm-menuwidth-left: 260px !default;
+$ocm-menuwidth-right: 360px !default;
 $ocm-transition-time-easing: 360ms cubic-bezier(.2,.57,.44,.83) !default;
 $ocm-transition: all $ocm-transition-time-easing !default;
-$ocm-query: 800px !default;
+$ocm-query-left: 1800px !default;
+$ocm-query-right: 900px !default;
 
 // Hamburger
 $ocm-button-size: 38px !default;

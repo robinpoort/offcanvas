@@ -7,6 +7,7 @@
 body,
 html {
   height: 100%;
+  min-height: 100%;
   margin: 0;
   padding: 0;
   background: #eee;
@@ -29,11 +30,7 @@ a {
 .off-canvas-wrapper {
   width: 100%;
   height: 100%;
-
-  @media (min-width:$ocm-query) {
-    display: table;
-    display: flex;
-  }
+  display: flex;
 }
 
 // The menu
@@ -42,10 +39,20 @@ a {
   color: #ecf0f1;
   padding: 1em;
 
-  @media (min-width:$ocm-query) {
-    display: table-cell;
-    min-width: $ocm-menuwidth;
-    flex: 0 0 $ocm-menuwidth;
+  &--left {
+    min-width: $ocm-menuwidth-left;
+
+    @media (min-width:$ocm-query-left) {
+      flex: 0 0 $ocm-menuwidth-left;
+    }
+  }
+
+  &--right {
+    min-width: $ocm-menuwidth-right;
+
+    @media (min-width:$ocm-query-right) {
+      flex: 0 0 $ocm-menuwidth-right;
+    }
   }
 
   h2 {
@@ -77,11 +84,7 @@ a {
   padding: 20px 60px;
   min-height: 100%;
   width: 100%;
-
-  @media (min-width:$ocm-query) {
-    display: table-cell;
-    flex: 1 1 auto;
-  }
+  flex: 1 1 auto;
 
   h1 {
     font-weight: normal;
@@ -119,7 +122,23 @@ a {
   .container {
     box-shadow: 0 0 10px rgba(0,0,0,.5);
 
-    @media (min-width:$ocm-query) {
+    @media (min-width:$ocm-query-left) {
+      box-shadow: none;
+    }
+  }
+}
+
+@media (min-width:$ocm-query-left) {
+  .opened--left {
+    .container {
+      box-shadow: none;
+    }
+  }
+}
+
+@media (min-width:$ocm-query-right) {
+  .opened--right {
+    .container {
       box-shadow: none;
     }
   }
